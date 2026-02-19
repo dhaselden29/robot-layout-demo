@@ -1,0 +1,77 @@
+{
+  "floor": {
+    "width": 30,
+    "depth": 50,
+    "gridDivisions": 50,
+    "wallHeight": 4,
+    "wallThickness": 0.2
+  },
+  "camera": {
+    "defaultPosition": [25, 22, 35],
+    "defaultTarget": [0, 0, 0],
+    "fov": 55,
+    "near": 0.1,
+    "far": 500,
+    "focusDistance": 5
+  },
+  "scene": {
+    "fogNear": 40,
+    "fogFar": 120,
+    "fogColor": "#c8d4e0",
+    "backgroundColor": "#c8d4e0",
+    "ambientLightIntensity": 0.5,
+    "directionalLightIntensity": 1.0,
+    "directionalLightPosition": [10, 20, 10]
+  },
+  "robots": {
+    "maxCount": 20,
+    "defaultCount": 1,
+    "defaultScale": "standard",
+    "scales": {
+      "compact": 0.5,
+      "standard": 1.0,
+      "large": 1.5
+    },
+    "labelHeight": 2.2,
+    "labelFontSize": 0.3,
+    "gridSpacingMultiplier": 1.8
+  },
+  "deployment": {
+    "gridSpacingMultiplier": 1.5,
+    "floorMargin": 2.0,
+    "defaultRotationDeg": 0,
+    "snapGridSize": 0.5,
+    "platformDefaultHeight": 1.5
+  },
+  "labels": {
+    "fontSize": 0.10,
+    "verticalOffset": 1.2
+  },
+  "interaction": {
+    "selectionRingColor": "#00aaff",
+    "selectionRingOpacity": 0.6,
+    "rotationHandleColor": "#ff8800",
+    "rotationHandleRadius": 1.2,
+    "dragPlaneY": 0.015
+  },
+  "manufacturers": {
+    "Universal Robots": {
+      "models": {
+        "UR5e": { "file": "universal_robots/ur5e.glb", "approxHeight": 1.3 },
+        "UR10e": { "file": "universal_robots/ur10e.glb", "approxHeight": 1.5 }
+      }
+    },
+    "FANUC": {
+      "models": {
+        "LR Mate 200iD": { "file": "fanuc/lrmate200id.glb", "approxHeight": 1.0 },
+        "M-10iA": { "file": "fanuc/m10ia.glb", "approxHeight": 1.6 }
+      }
+    },
+    "ABB": {
+      "models": {
+        "IRB 120": { "file": "abb/irb120.glb", "approxHeight": 0.9 },
+        "IRB 2400": { "file": "abb/irb2400.glb", "approxHeight": 1.8 }
+      }
+    }
+  }
+}

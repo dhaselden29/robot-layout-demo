@@ -1,0 +1,198 @@
+{
+  "categories": {
+    "shapes": {
+      "label": "Shapes",
+      "items": [
+        {
+          "id": "box",
+          "name": "Box",
+          "shape": "box",
+          "defaultDimensions": { "length": 1.0, "width": 1.0, "height": 1.0 },
+          "color": "#7a8a9a"
+        },
+        {
+          "id": "cylinder",
+          "name": "Cylinder",
+          "shape": "cylinder",
+          "defaultDimensions": { "radius": 0.5, "height": 1.0 },
+          "color": "#7a8a9a"
+        },
+        {
+          "id": "sphere",
+          "name": "Sphere",
+          "shape": "sphere",
+          "defaultDimensions": { "radius": 0.5 },
+          "color": "#7a8a9a"
+        }
+      ]
+    },
+    "equipment": {
+      "label": "Equipment",
+      "items": [
+        {
+          "id": "work_table",
+          "name": "Work Table",
+          "shape": "box",
+          "defaultDimensions": { "length": 1.2, "width": 0.6, "height": 0.9 },
+          "color": "#8b8680"
+        },
+        {
+          "id": "platform",
+          "name": "Platform",
+          "shape": "box",
+          "defaultDimensions": { "length": 2.0, "width": 1.5, "height": 0.15 },
+          "color": "#9a9a8a"
+        },
+        {
+          "id": "turntable",
+          "name": "Turntable",
+          "shape": "cylinder",
+          "defaultDimensions": { "radius": 0.6, "height": 0.12 },
+          "color": "#5a7a8c"
+        },
+        {
+          "id": "conveyor",
+          "name": "Conveyor",
+          "shape": "box",
+          "defaultDimensions": { "length": 3.0, "width": 0.5, "height": 0.85 },
+          "color": "#4a7040"
+        },
+        {
+          "id": "safety_fence",
+          "name": "Safety Fence",
+          "shape": "box",
+          "defaultDimensions": { "length": 2.0, "width": 0.05, "height": 1.4 },
+          "color": "#e8a020"
+        },
+        {
+          "id": "robot_cell_base",
+          "name": "Robot Cell Base",
+          "shape": "box",
+          "defaultDimensions": { "length": 1.0, "width": 1.0, "height": 0.2 },
+          "color": "#6a8a6a"
+        },
+        {
+          "id": "wall",
+          "name": "Wall",
+          "shape": "box",
+          "defaultDimensions": { "length": 5.0, "width": 0.2, "height": 3.0 },
+          "color": "#c8bfb8",
+          "defaultOpacity": 0.85
+        }
+      ]
+    },
+    "materials": {
+      "label": "Materials",
+      "items": [
+        {
+          "id": "ibeam_w4x13",
+          "name": "I-Beam W4×13",
+          "shape": "ibeam",
+          "defaultDimensions": {
+            "length": 3.0,
+            "flangeWidth": 0.103,
+            "webHeight": 0.103,
+            "flangeThick": 0.0083,
+            "webThick": 0.0058
+          },
+          "color": "#6b6b6b"
+        },
+        {
+          "id": "ibeam_w6x15",
+          "name": "I-Beam W6×15",
+          "shape": "ibeam",
+          "defaultDimensions": {
+            "length": 3.0,
+            "flangeWidth": 0.152,
+            "webHeight": 0.152,
+            "flangeThick": 0.0107,
+            "webThick": 0.0069
+          },
+          "color": "#6b6b6b"
+        },
+        {
+          "id": "ibeam_w8x31",
+          "name": "I-Beam W8×31",
+          "shape": "ibeam",
+          "defaultDimensions": {
+            "length": 3.0,
+            "flangeWidth": 0.203,
+            "webHeight": 0.203,
+            "flangeThick": 0.0152,
+            "webThick": 0.0079
+          },
+          "color": "#6b6b6b"
+        },
+        {
+          "id": "pipe_2in",
+          "name": "Pipe NPS 2\"",
+          "shape": "pipe",
+          "defaultDimensions": {
+            "length": 3.0,
+            "outerDiam": 0.0603,
+            "wallThick": 0.0037
+          },
+          "color": "#808080"
+        },
+        {
+          "id": "pipe_4in",
+          "name": "Pipe NPS 4\"",
+          "shape": "pipe",
+          "defaultDimensions": {
+            "length": 3.0,
+            "outerDiam": 0.1143,
+            "wallThick": 0.0060
+          },
+          "color": "#808080"
+        },
+        {
+          "id": "pipe_6in",
+          "name": "Pipe NPS 6\"",
+          "shape": "pipe",
+          "defaultDimensions": {
+            "length": 3.0,
+            "outerDiam": 0.1683,
+            "wallThick": 0.0071
+          },
+          "color": "#808080"
+        },
+        {
+          "id": "cabletray_150",
+          "name": "Cable Tray 150mm",
+          "shape": "cabletray",
+          "defaultDimensions": {
+            "length": 3.0,
+            "width": 0.15,
+            "height": 0.05,
+            "wallThick": 0.003
+          },
+          "color": "#c0c0c0"
+        },
+        {
+          "id": "cabletray_300",
+          "name": "Cable Tray 300mm",
+          "shape": "cabletray",
+          "defaultDimensions": {
+            "length": 3.0,
+            "width": 0.30,
+            "height": 0.05,
+            "wallThick": 0.003
+          },
+          "color": "#c0c0c0"
+        },
+        {
+          "id": "cabletray_450",
+          "name": "Cable Tray 450mm",
+          "shape": "cabletray",
+          "defaultDimensions": {
+            "length": 3.0,
+            "width": 0.45,
+            "height": 0.05,
+            "wallThick": 0.003
+          },
+          "color": "#c0c0c0"
+        }
+      ]
+    }
+  }
+}

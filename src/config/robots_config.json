@@ -1,0 +1,91 @@
+{
+  "manufacturers": {
+    "Universal Robots": {
+      "models": [
+        {
+          "id": "ur5e",
+          "name": "UR5e",
+          "urdf": "universal_robots/ur5e.urdf",
+          "packageMap": { "ur5e": "universal_robots" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.149, 0.149],
+          "reach_mm": 850,
+          "payload_kg": 5,
+          "type": "articulated_arm",
+          "approxHeight": 1.3
+        },
+        {
+          "id": "ur10e",
+          "name": "UR10e",
+          "urdf": null,
+          "packageMap": null,
+          "defaultScale": 1.0,
+          "footprint_m": [0.190, 0.190],
+          "reach_mm": 1300,
+          "payload_kg": 12.5,
+          "type": "articulated_arm",
+          "approxHeight": 1.5,
+          "note": "URDF pending — renders as placeholder"
+        }
+      ]
+    },
+    "FANUC": {
+      "models": [
+        {
+          "id": "lrmate200id",
+          "name": "LR Mate 200iD",
+          "urdf": "fanuc/lrmate200id.urdf",
+          "packageMap": { "fanuc_lrmate200id": "fanuc" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.400, 0.400],
+          "reach_mm": 717,
+          "payload_kg": 7,
+          "type": "articulated_arm",
+          "approxHeight": 1.0
+        },
+        {
+          "id": "m10ia",
+          "name": "M-10iA",
+          "urdf": null,
+          "packageMap": null,
+          "defaultScale": 1.0,
+          "footprint_m": [0.450, 0.450],
+          "reach_mm": 1422,
+          "payload_kg": 10,
+          "type": "articulated_arm",
+          "approxHeight": 1.6,
+          "note": "URDF pending — renders as placeholder"
+        }
+      ]
+    },
+    "ABB": {
+      "models": [
+        {
+          "id": "irb120",
+          "name": "IRB 120",
+          "urdf": "abb/irb120.urdf",
+          "packageMap": { "abb_irb120": "abb" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.180, 0.180],
+          "reach_mm": 580,
+          "payload_kg": 3,
+          "type": "articulated_arm",
+          "approxHeight": 0.9
+        },
+        {
+          "id": "irb2400",
+          "name": "IRB 2400",
+          "urdf": null,
+          "packageMap": null,
+          "defaultScale": 1.0,
+          "footprint_m": [0.550, 0.550],
+          "reach_mm": 1550,
+          "payload_kg": 20,
+          "type": "articulated_arm",
+          "approxHeight": 1.8,
+          "note": "URDF pending — renders as placeholder"
+        }
+      ]
+    }
+  }
+}

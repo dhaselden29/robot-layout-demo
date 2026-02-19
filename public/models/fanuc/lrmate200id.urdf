@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!--
+  FANUC LR Mate 200iD URDF
+  Generated from: ros-industrial/fanuc fanuc_lrmate200id_support/urdf/lrmate200id_macro.xacro
+  Source: https://github.com/ros-industrial/fanuc
+  License: BSD 3-Clause
+  Mesh paths resolved to package://fanuc_lrmate200id — maps to /models/fanuc in the app.
+  Xacro macros resolved: ${prefix}="", ${radians(x)} expanded, material macros inlined.
+-->
+<robot name="fanuc_lrmate200id">
+
+  <material name="fanuc_yellow">
+    <color rgba="1.0 0.78 0.0 1.0"/>
+  </material>
+  <material name="fanuc_gray">
+    <color rgba="0.28 0.28 0.28 1.0"/>
+  </material>
+  <material name="fanuc_black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+
+  <!-- LINKS -->
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_lrmate200id/meshes/visual/base_link.stl"/>
+      </geometry>
+      <material name="fanuc_gray"/>
+    </visual>
+  </link>
+
+  <link name="link_1">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_lrmate200id/meshes/visual/link_1.stl"/>
+      </geometry>
+      <material name="fanuc_yellow"/>
+    </visual>
+  </link>
+
+  <link name="link_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_lrmate200id/meshes/visual/link_2.stl"/>
+      </geometry>
+      <material name="fanuc_yellow"/>
+    </visual>
+  </link>
+
+  <link name="link_3">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_lrmate200id/meshes/visual/link_3.stl"/>
+      </geometry>
+      <material name="fanuc_yellow"/>
+    </visual>
+  </link>
+
+  <link name="link_4">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_lrmate200id/meshes/visual/link_4.stl"/>
+      </geometry>
+      <material name="fanuc_yellow"/>
+    </visual>
+  </link>
+
+  <link name="link_5">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_lrmate200id/meshes/visual/link_5.stl"/>
+      </geometry>
+      <material name="fanuc_yellow"/>
+    </visual>
+  </link>
+
+  <link name="link_6">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_lrmate200id/meshes/visual/link_6.stl"/>
+      </geometry>
+      <material name="fanuc_black"/>
+    </visual>
+  </link>
+
+  <!-- JOINTS (transforms from xacro macro, radians expanded) -->
+
+  <!-- base_link → link_1: 330mm rise -->
+  <joint name="joint_1" type="revolute">
+    <origin xyz="0 0 0.330" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="0" lower="-2.9671" upper="2.9671" velocity="7.8540"/>
+  </joint>
+
+  <!-- link_1 → link_2: 50mm offset -->
+  <joint name="joint_2" type="revolute">
+    <origin xyz="0.050 0 0" rpy="0 0 0"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-1.7453" upper="2.5307" velocity="6.6323"/>
+  </joint>
+
+  <!-- link_2 → link_3: 330mm rise -->
+  <joint name="joint_3" type="revolute">
+    <origin xyz="0 0 0.330" rpy="0 0 0"/>
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="0" lower="-1.2217" upper="3.5779" velocity="9.0757"/>
+  </joint>
+
+  <!-- link_3 → link_4: 35mm rise -->
+  <joint name="joint_4" type="revolute">
+    <origin xyz="0 0 0.035" rpy="0 0 0"/>
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="0" lower="-3.3161" upper="3.3161" velocity="9.5993"/>
+  </joint>
+
+  <!-- link_4 → link_5: 335mm reach -->
+  <joint name="joint_5" type="revolute">
+    <origin xyz="0.335 0 0" rpy="0 0 0"/>
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="0" lower="-2.1817" upper="2.1817" velocity="9.5123"/>
+  </joint>
+
+  <!-- link_5 → link_6: 80mm reach -->
+  <joint name="joint_6" type="revolute">
+    <origin xyz="0.080 0 0" rpy="0 0 0"/>
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="0" lower="-6.2832" upper="6.2832" velocity="17.4533"/>
+  </joint>
+
+</robot>

@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!--
+  ABB IRB 120 (3kg / 580mm) URDF
+  Generated from: ros-industrial/abb abb_irb120_support/urdf/irb120_3_58_macro.xacro
+  Source: https://github.com/ros-industrial/abb
+  License: BSD 3-Clause
+  Mesh paths resolved to package://abb_irb120 — maps to /models/abb in the app.
+  Xacro macros resolved: ${prefix}="", ${radians(x)} already in radians in source, material macros inlined.
+-->
+<robot name="abb_irb120">
+
+  <material name="abb_orange">
+    <color rgba="0.898 0.349 0.024 1.0"/>
+  </material>
+  <material name="abb_black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+
+  <!-- LINKS -->
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb120/meshes/visual/base_link.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_1">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb120/meshes/visual/link_1.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb120/meshes/visual/link_2.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_3">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb120/meshes/visual/link_3.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_4">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb120/meshes/visual/link_4.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_5">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb120/meshes/visual/link_5.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_6">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb120/meshes/visual/link_6.stl"/>
+      </geometry>
+      <material name="abb_black"/>
+    </visual>
+  </link>
+
+  <!-- JOINTS (transforms directly from macro source — already in radians) -->
+
+  <!-- base_link → link_1: at origin -->
+  <joint name="joint_1" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="0" lower="-2.87979" upper="2.87979" velocity="4.36332"/>
+  </joint>
+
+  <!-- link_1 → link_2: 290mm rise -->
+  <joint name="joint_2" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.29"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-1.91986" upper="1.91986" velocity="4.36332"/>
+  </joint>
+
+  <!-- link_2 → link_3: 270mm rise -->
+  <joint name="joint_3" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.27"/>
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-1.91986" upper="1.22173" velocity="4.36332"/>
+  </joint>
+
+  <!-- link_3 → link_4: 70mm rise -->
+  <joint name="joint_4" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.07"/>
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="-2.79253" upper="2.79253" velocity="5.58505"/>
+  </joint>
+
+  <!-- link_4 → link_5: 302mm reach -->
+  <joint name="joint_5" type="revolute">
+    <origin rpy="0 0 0" xyz="0.302 0 0"/>
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-2.09440" upper="2.09440" velocity="5.58505"/>
+  </joint>
+
+  <!-- link_5 → link_6: 72mm reach -->
+  <joint name="joint_6" type="revolute">
+    <origin rpy="0 0 0" xyz="0.072 0 0"/>
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="-6.98132" upper="6.98132" velocity="7.33038"/>
+  </joint>
+
+</robot>

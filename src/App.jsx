@@ -38,9 +38,12 @@ import RotationHandle from './scene/RotationHandle';
 import SceneSetup from './scene/SceneSetup';
 import ControlPanel from './ui/ControlPanel';
 import DragCoordinatesHUD from './ui/DragCoordinatesHUD';
+import ScaleIndicator from './ui/ScaleIndicator';
 import StatusBar from './ui/StatusBar';
 
 export default function App() {
+  const isOrthographic = useSceneStore((s) => s.isOrthographic);
+
   return (
     <div className="flex flex-col w-full h-full">
 
@@ -93,14 +96,31 @@ export default function App() {
           {/* Live coordinate HUD — CSS overlay, shown during drag/rotate */}
           <DragCoordinatesHUD />
 
-          {/* Overhead view button — lower-left corner */}
-          <button
-            onClick={() => useSceneStore.getState().triggerOverheadView()}
-            title="Overhead view — fit all equipment"
-            className="absolute bottom-4 left-4 z-10 bg-gray-900/80 hover:bg-gray-800 border border-gray-600 text-gray-200 text-xs font-medium px-3 py-2 rounded shadow-lg transition-colors"
-          >
-            ⊙ Overhead
-          </button>
+          {/* Scale indicator — lower-left, above buttons */}
+          <ScaleIndicator />
+
+          {/* View buttons — lower-left corner */}
+          <div className="absolute bottom-4 left-4 z-10 flex gap-2">
+            <button
+              onClick={() => useSceneStore.getState().triggerOverheadView()}
+              title="Overhead view — fit all equipment"
+              className="bg-gray-900/80 hover:bg-gray-800 border border-gray-600 text-gray-200 text-xs font-medium px-3 py-2 rounded shadow-lg transition-colors"
+            >
+              ⊙ Overhead
+            </button>
+            <button
+              onClick={() => useSceneStore.getState().toggleOrthographic()}
+              title={isOrthographic ? 'Switch to 3D perspective view' : 'Switch to 2D orthographic layout view'}
+              className={
+                'text-xs font-medium px-3 py-2 rounded shadow-lg transition-colors border ' +
+                (isOrthographic
+                  ? 'bg-blue-700 hover:bg-blue-600 border-blue-500 text-white'
+                  : 'bg-gray-900/80 hover:bg-gray-800 border-gray-600 text-gray-200')
+              }
+            >
+              {isOrthographic ? '3D View' : '2D Layout'}
+            </button>
+          </div>
         </div>
       </div>
 

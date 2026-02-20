@@ -113,6 +113,34 @@ const useSceneStore = create((set) => ({
       ),
     })),
 
+  /**
+   * Duplicates an existing robot. The clone gets a new ID, is offset +1m in X and Y,
+   * starts at zero joint pose, and has no parent binding.
+   * @param {string} robotId - Source robot id to clone
+   */
+  duplicateRobot: (robotId) =>
+    set((state) => {
+      const source = state.deployedRobots.find((r) => r.id === robotId);
+      if (!source) return {};
+      const newId = `r-${state.nextRobotId}`;
+      const idNum = state.nextRobotId;
+      const clone = {
+        ...source,
+        id: newId,
+        position: [source.position[0] + 1, source.position[1] + 1, source.position[2]],
+        label: `${source.manufacturer} ${source.model} #${idNum}`,
+        parentObjectId: null,
+        parentOffset: null,
+        trackPosition: null,
+      };
+      return {
+        deployedRobots: [...state.deployedRobots, clone],
+        nextRobotId: state.nextRobotId + 1,
+        selectedRobotId: newId,
+        selectedObjectId: null,
+      };
+    }),
+
   // ─── Robot joint control (Joints tab) ────────────────────────────────────
 
   /**
@@ -331,6 +359,32 @@ const useSceneStore = create((set) => ({
     })),
 
   /**
+   * Duplicates an existing scene object. The clone gets a new ID, is offset +1m in X and Y,
+   * and has independent dimensions (deep-copied).
+   * @param {string} objectId - Source object id to clone
+   */
+  duplicateObject: (objectId) =>
+    set((state) => {
+      const source = state.sceneObjects.find((o) => o.id === objectId);
+      if (!source) return {};
+      const newId = `o-${state.nextObjectId}`;
+      const idNum = state.nextObjectId;
+      const clone = {
+        ...source,
+        id: newId,
+        dimensions: { ...source.dimensions },
+        position: [source.position[0] + 1, source.position[1] + 1, source.position[2]],
+        label: `${source.name} #${idNum}`,
+      };
+      return {
+        sceneObjects: [...state.sceneObjects, clone],
+        nextObjectId: state.nextObjectId + 1,
+        selectedObjectId: newId,
+        selectedRobotId: null,
+      };
+    }),
+
+  /**
    * Clears only scene objects. Phase 7: unbinds all robots (keeps them at current positions).
    */
   clearObjects: () =>
@@ -410,6 +464,8 @@ const useSceneStore = create((set) => ({
       interactionMode:   'orbit',
       snapToGridEnabled: data.snapToGridEnabled ?? false,
       showLabels:        data.showLabels        ?? true,
+      isOrthographic:    false,
+      orthoViewInfo:     null,
       sceneSettings:     data.sceneSettings
         ? { ...s.sceneSettings, ...data.sceneSettings }
         : s.sceneSettings,
@@ -417,7 +473,7 @@ const useSceneStore = create((set) => ({
 
   // ─── Label visibility ─────────────────────────────────────────────────────
 
-  showLabels: true,
+  showLabels: false,
   setShowLabels: (val) => set({ showLabels: val }),
 
   // ─── Overhead view (counter pattern like cameraResetCount) ────────────────
@@ -425,6 +481,13 @@ const useSceneStore = create((set) => ({
   overheadViewCount: 0,
   triggerOverheadView: () =>
     set((state) => ({ overheadViewCount: state.overheadViewCount + 1 })),
+
+  // ─── Orthographic 2D layout view ───────────────────────────────────────
+
+  isOrthographic: false,
+  toggleOrthographic: () => set((s) => ({ isOrthographic: !s.isOrthographic })),
+  orthoViewInfo: null,
+  setOrthoViewInfo: (info) => set({ orthoViewInfo: info }),
 
   // ─── Sidebar tab (Changes 1+2) ────────────────────────────────────────────
 

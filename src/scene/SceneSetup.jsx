@@ -26,15 +26,16 @@ export default function SceneSetup() {
   const ambientIntensity = useSceneStore((s) => s.sceneSettings.ambientIntensity);
   const directionalIntensity = useSceneStore((s) => s.sceneSettings.directionalIntensity);
   const shadowsEnabled = useSceneStore((s) => s.sceneSettings.shadowsEnabled);
+  const isOrthographic = useSceneStore((s) => s.isOrthographic);
 
   // Apply background colour
   useEffect(() => {
     scene.background = new THREE.Color(backgroundColor);
   }, [scene, backgroundColor]);
 
-  // Apply or remove fog
+  // Apply or remove fog — disabled in orthographic 2D view
   useEffect(() => {
-    if (fogEnabled) {
+    if (fogEnabled && !isOrthographic) {
       scene.fog = new THREE.Fog(
         config.scene.fogColor,
         config.scene.fogNear,
@@ -43,7 +44,7 @@ export default function SceneSetup() {
     } else {
       scene.fog = null;
     }
-  }, [scene, fogEnabled]);
+  }, [scene, fogEnabled, isOrthographic]);
 
   return (
     <>
@@ -54,7 +55,7 @@ export default function SceneSetup() {
       <directionalLight
         intensity={directionalIntensity}
         position={config.scene.directionalLightPosition}
-        castShadow={shadowsEnabled}
+        castShadow={shadowsEnabled && !isOrthographic}
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.001}
         shadow-camera-near={0.5}

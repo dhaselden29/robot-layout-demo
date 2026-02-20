@@ -27,7 +27,7 @@ const DEFAULT_ROBOT_COLOR = '#546e7a';
 
 // ─── Individual robot row ─────────────────────────────────────────────────────
 
-function RobotRow({ robot, isSelected, onUpdateTransform, onUpdateStyle, onRemove, onFocus, onDrag, onSetGripper, onSetGripperScale, onBind, onUnbind, sceneObjects }) {
+function RobotRow({ robot, isSelected, onUpdateTransform, onUpdateStyle, onRemove, onFocus, onDrag, onDuplicate, onSetGripper, onSetGripperScale, onBind, onUnbind, sceneObjects }) {
   const [localX, setLocalX] = useState(robot.position[0]);
   const [localY, setLocalY] = useState(robot.position[1]);
   const [localZ, setLocalZ] = useState(robot.position[2]);
@@ -102,6 +102,13 @@ function RobotRow({ robot, isSelected, onUpdateTransform, onUpdateStyle, onRemov
           className="text-xs text-gray-400 hover:text-gray-100 px-1 py-0.5 rounded hover:bg-gray-700 transition-colors flex-shrink-0"
         >
           ⤢
+        </button>
+        <button
+          onClick={() => onDuplicate(robot.id)}
+          title="Duplicate"
+          className="text-xs text-green-400 hover:text-green-300 px-1 py-0.5 rounded hover:bg-gray-700 transition-colors flex-shrink-0"
+        >
+          ⧉
         </button>
         <button
           onClick={handleFocus}
@@ -307,6 +314,7 @@ export default function DeployedRobotList() {
   const setInteractionMode = useSceneStore((s) => s.setInteractionMode);
   const setRobotGripper = useSceneStore((s) => s.setRobotGripper);
   const setRobotGripperScale = useSceneStore((s) => s.setRobotGripperScale);
+  const duplicateRobot = useSceneStore((s) => s.duplicateRobot);
   const bindRobotToObject = useSceneStore((s) => s.bindRobotToObject);
   const unbindRobot = useSceneStore((s) => s.unbindRobot);
 
@@ -335,6 +343,7 @@ export default function DeployedRobotList() {
           onRemove={removeRobot}
           onFocus={setFocusTarget}
           onDrag={handleDrag}
+          onDuplicate={duplicateRobot}
           onSetGripper={setRobotGripper}
           onSetGripperScale={setRobotGripperScale}
           onBind={bindRobotToObject}

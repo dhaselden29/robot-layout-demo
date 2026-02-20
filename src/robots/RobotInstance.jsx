@@ -29,9 +29,8 @@
  *   - Small mounting bracket rendered above ceiling-mounted robots.
  */
 
-import { useCursor } from '@react-three/drei';
-import { Text } from '@react-three/drei';
-import { useEffect, useRef, useState } from 'react';
+import { Line, useCursor, Text } from '@react-three/drei';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import config from '../config/config.json';
 import robotsConfig from '../config/robots_config.json';
 import useSceneStore from '../store/sceneStore';
@@ -59,6 +58,7 @@ export default function RobotInstance({ robot, approxHeight, registerRef }) {
   const selectedRobotId = useSceneStore((s) => s.selectedRobotId);
   const isSelected = selectedRobotId === robot.id;
   const showLabels = useSceneStore((s) => s.showLabels);
+  const isOrthographic = useSceneStore((s) => s.isOrthographic);
 
   // PHASE 4 FIX: Traverse the entire subtree and stamp every object with
   // this robot's ID. Raycasting returns the deepest intersected object
@@ -95,6 +95,20 @@ export default function RobotInstance({ robot, approxHeight, registerRef }) {
   const footprint = modelConfig?.footprint_m?.[0] ?? 0.3;
   const ringOuter = Math.max(footprint * 1.5, 0.4) * scale;
   const ringInner = ringOuter * 0.75;
+
+  // Reach circle — 85% of robot reach, shown only in orthographic 2D view
+  const reachMm = modelConfig?.reach_mm ?? 0;
+  const reachRadius = (reachMm / 1000) * 0.85 * scale;
+  const reachCirclePoints = useMemo(() => {
+    if (!reachRadius) return null;
+    const segments = 72;
+    const pts = [];
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      pts.push([Math.cos(angle) * reachRadius, 0.03, Math.sin(angle) * reachRadius]);
+    }
+    return pts;
+  }, [reachRadius]);
 
   function handlePointerDown(event) {
     // Only start a drag when in orbit mode
@@ -210,6 +224,22 @@ export default function RobotInstance({ robot, approxHeight, registerRef }) {
         >
           {robot.label}
         </Text>
+      )}
+
+      {/* Reach envelope — 85% of robot reach, shown only in 2D layout view */}
+      {isOrthographic && reachCirclePoints && (
+        <Line
+          points={reachCirclePoints}
+          color="#ffffff"
+          lineWidth={1}
+          dashed
+          dashScale={20}
+          dashSize={0.3}
+          gapSize={0.15}
+          transparent
+          opacity={0.5}
+          raycast={() => {}}
+        />
       )}
     </group>
   );

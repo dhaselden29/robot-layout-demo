@@ -31,6 +31,7 @@ import useSceneStore from '../store/sceneStore';
 import { buildRobotInstances } from '../utils/deploymentUtils';
 import DeployedRobotList from './DeployedRobotList';
 import EquipmentPanel from './EquipmentPanel';
+import ImportPanel from './ImportPanel';
 import JointsPanel from './JointsPanel';
 import ScenesPanel from './ScenesPanel';
 import SettingsPanel from './SettingsPanel';
@@ -191,7 +192,7 @@ export default function ControlPanel() {
   const showHeightInput = mountType !== 'floor';
 
   return (
-    <div className="flex flex-col w-64 bg-gray-900 text-gray-100 h-full select-none">
+    <div className="flex flex-col w-80 bg-gray-900 text-gray-100 h-full select-none">
 
       {/* App title */}
       <div className="border-b border-gray-700 px-4 pt-4 pb-3 flex-shrink-0">
@@ -215,6 +216,9 @@ export default function ControlPanel() {
         <button onClick={() => setActiveTab('saves')} className={tabBtnCls(activeTab === 'saves')}>
           SAVES
         </button>
+        <button onClick={() => setActiveTab('import')} className={tabBtnCls(activeTab === 'import')}>
+          IMPORT
+        </button>
         <button onClick={() => setActiveTab('general')} className={tabBtnCls(activeTab === 'general')}>
           GENERAL
         </button>
@@ -225,6 +229,8 @@ export default function ControlPanel() {
 
       {activeTab === 'general' ? (
         <SettingsPanel />
+      ) : activeTab === 'import' ? (
+        <ImportPanel />
       ) : activeTab === 'saves' ? (
         <ScenesPanel />
       ) : activeTab === 'joints' ? (

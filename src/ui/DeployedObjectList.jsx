@@ -20,7 +20,7 @@ import { getEditableDimensions, getObjectTopSurface, getSpecInfo } from '../util
 
 // ─── Individual object row ────────────────────────────────────────────────────
 
-function ObjectRow({ object, isSelected, onUpdateTransform, onUpdateDimensions, onUpdateStyle, onMountRobot, onRemove, onFocus, onDrag }) {
+function ObjectRow({ object, isSelected, onUpdateTransform, onUpdateDimensions, onUpdateStyle, onMountRobot, onRemove, onFocus, onDrag, onDuplicate }) {
   const [localX, setLocalX] = useState(object.position[0]);
   const [localY, setLocalY] = useState(object.position[1]);
   const [localZ, setLocalZ] = useState(object.position[2]);
@@ -96,6 +96,13 @@ function ObjectRow({ object, isSelected, onUpdateTransform, onUpdateDimensions, 
           className="text-xs text-gray-400 hover:text-gray-100 px-1 py-0.5 rounded hover:bg-gray-700 transition-colors flex-shrink-0"
         >
           ⤢
+        </button>
+        <button
+          onClick={() => onDuplicate(object.id)}
+          title="Duplicate"
+          className="text-xs text-green-400 hover:text-green-300 px-1 py-0.5 rounded hover:bg-gray-700 transition-colors flex-shrink-0"
+        >
+          ⧉
         </button>
         <button
           onClick={handleFocus}
@@ -260,6 +267,7 @@ export default function DeployedObjectList() {
   const updateObjectTransform = useSceneStore((s) => s.updateObjectTransform);
   const updateObjectDimensions = useSceneStore((s) => s.updateObjectDimensions);
   const updateObjectStyle = useSceneStore((s) => s.updateObjectStyle);
+  const duplicateObject = useSceneStore((s) => s.duplicateObject);
   const removeObject = useSceneStore((s) => s.removeObject);
   const setFocusTarget = useSceneStore((s) => s.setFocusTarget);
   const selectedObjectId = useSceneStore((s) => s.selectedObjectId);
@@ -309,6 +317,7 @@ export default function DeployedObjectList() {
           onRemove={removeObject}
           onFocus={setFocusTarget}
           onDrag={handleDrag}
+          onDuplicate={duplicateObject}
         />
       ))}
     </div>

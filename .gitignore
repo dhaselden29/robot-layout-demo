@@ -29,3 +29,6 @@ dist-ssr
 # Scene saves — committed deliberately, not auto-included
 # Remove the next line if you want to version-control your saves
 # saves/
+
+# User guides / documentation
+docs/

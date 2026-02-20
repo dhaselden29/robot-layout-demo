@@ -28,12 +28,46 @@ function formatDate(iso) {
     + d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
 }
 
+const inputCls =
+  'bg-gray-800 border border-gray-600 rounded px-2 py-1.5 text-sm text-gray-100 ' +
+  'focus:outline-none focus:border-blue-500 w-full';
+
 export default function ScenesPanel() {
   const [scenes, setScenes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [loadingName, setLoadingName] = useState(null);
   const [deletingName, setDeletingName] = useState(null);
+
+  // ── Save form state ──
+  const [sceneName, setSceneName] = useState('scene');
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
+
+  function handleSaveScene() {
+    const s = useSceneStore.getState();
+    const scene = {
+      version: 1,
+      savedAt: new Date().toISOString(),
+      deployedRobots:    s.deployedRobots,
+      sceneObjects:      s.sceneObjects,
+      nextRobotId:       s.nextRobotId,
+      nextObjectId:      s.nextObjectId,
+      robotJointAngles:  s.robotJointAngles,
+      snapToGridEnabled: s.snapToGridEnabled,
+      showLabels:        s.showLabels,
+      sceneSettings:     s.sceneSettings,
+    };
+    setSaveStatus('saving');
+    try {
+      saveScene(sceneName.trim() || 'scene', scene);
+      setSaveStatus('saved');
+      fetchScenes();
+      setTimeout(() => setSaveStatus(null), 2000);
+    } catch {
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus(null), 3000);
+    }
+  }
 
   function fetchScenes() {
     setLoading(true);
@@ -113,6 +147,40 @@ export default function ScenesPanel() {
   return (
     <div className="flex flex-col gap-3">
 
+      {/* ── Save form ── */}
+      <div className="flex flex-col gap-2">
+        <p className={labelCls}>Save Scene</p>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={sceneName}
+            onChange={(e) => setSceneName(e.target.value)}
+            placeholder="scene"
+            className={inputCls}
+          />
+          <button
+            onClick={handleSaveScene}
+            disabled={saveStatus === 'saving'}
+            className={
+              'flex-shrink-0 font-semibold py-1.5 px-3 rounded text-sm transition-colors ' +
+              (saveStatus === 'saved'
+                ? 'bg-green-700 text-white'
+                : saveStatus === 'error'
+                ? 'bg-red-800 text-white'
+                : 'bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white disabled:opacity-50')
+            }
+          >
+            {saveStatus === 'saving' ? 'Saving\u2026'
+              : saveStatus === 'saved' ? '\u2713 Saved'
+              : saveStatus === 'error' ? '\u2717 Error'
+              : 'Save'}
+          </button>
+        </div>
+        <p className="text-xs text-gray-600 -mt-1">
+          Saved to browser storage
+        </p>
+      </div>
+
       {/* Header row */}
       <div className="flex items-center justify-between">
         <p className={labelCls}>Saved Scenes</p>
@@ -142,7 +210,7 @@ export default function ScenesPanel() {
       {/* Empty state */}
       {!loading && scenes.length === 0 && (
         <p className="text-xs text-gray-500 italic">
-          No saved scenes yet. Use the ROBOT tab to save your first scene.
+          No saved scenes yet. Enter a name above and click Save.
         </p>
       )}
 

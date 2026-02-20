@@ -319,6 +319,36 @@ const useSceneStore = create((set) => ({
   selectedObjectId: null,
   setSelectedObjectId: (id) => set({ selectedObjectId: id, selectedRobotId: null }),
 
+  // ─── Scene settings (GENERAL tab) ─────────────────────────────────────────
+
+  sceneSettings: {
+    floorColor: '#8a9ba8',
+    backgroundColor: '#c8d4e0',
+    fogEnabled: true,
+    gridVisible: true,
+    ambientIntensity: 0.7,
+    directionalIntensity: 0.8,
+    shadowsEnabled: true,
+  },
+
+  updateSceneSettings: (patch) =>
+    set((s) => ({
+      sceneSettings: { ...s.sceneSettings, ...patch },
+    })),
+
+  resetSceneSettings: () =>
+    set({
+      sceneSettings: {
+        floorColor: '#8a9ba8',
+        backgroundColor: '#c8d4e0',
+        fogEnabled: true,
+        gridVisible: true,
+        ambientIntensity: 0.7,
+        directionalIntensity: 0.8,
+        shadowsEnabled: true,
+      },
+    }),
+
   // ─── Scene persistence ────────────────────────────────────────────────────
 
   /**
@@ -328,7 +358,7 @@ const useSceneStore = create((set) => ({
    * Joint angles are restored so models settle into saved poses once loaded.
    */
   restoreScene: (data) =>
-    set({
+    set((s) => ({
       deployedRobots:    data.deployedRobots    ?? [],
       sceneObjects:      data.sceneObjects      ?? [],
       nextRobotId:       data.nextRobotId       ?? 1,
@@ -340,7 +370,10 @@ const useSceneStore = create((set) => ({
       interactionMode:   'orbit',
       snapToGridEnabled: data.snapToGridEnabled ?? false,
       showLabels:        data.showLabels        ?? true,
-    }),
+      sceneSettings:     data.sceneSettings
+        ? { ...s.sceneSettings, ...data.sceneSettings }
+        : s.sceneSettings,
+    })),
 
   // ─── Label visibility ─────────────────────────────────────────────────────
 

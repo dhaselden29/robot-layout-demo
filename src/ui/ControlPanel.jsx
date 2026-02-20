@@ -29,11 +29,11 @@ import sceneConfig from '../config/config.json';
 import robotsConfig from '../config/robots_config.json';
 import useSceneStore from '../store/sceneStore';
 import { buildRobotInstances } from '../utils/deploymentUtils';
-import { saveScene } from '../utils/sceneStorage';
 import DeployedRobotList from './DeployedRobotList';
 import EquipmentPanel from './EquipmentPanel';
 import JointsPanel from './JointsPanel';
 import ScenesPanel from './ScenesPanel';
+import SettingsPanel from './SettingsPanel';
 
 const manufacturerNames = Object.keys(robotsConfig.manufacturers);
 const scaleNames = Object.keys(sceneConfig.robots.scales);
@@ -85,34 +85,6 @@ export default function ControlPanel() {
   const snapToGridEnabled = useSceneStore((s) => s.snapToGridEnabled);
   const showLabels = useSceneStore((s) => s.showLabels);
   const setShowLabels = useSceneStore((s) => s.setShowLabels);
-
-  // ── Scene save ────────────────────────────────────────────────────────────
-  const [sceneName, setSceneName] = useState('scene');
-  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
-
-  function handleSaveScene() {
-    const s = useSceneStore.getState();
-    const scene = {
-      version: 1,
-      savedAt: new Date().toISOString(),
-      deployedRobots:    s.deployedRobots,
-      sceneObjects:      s.sceneObjects,
-      nextRobotId:       s.nextRobotId,
-      nextObjectId:      s.nextObjectId,
-      robotJointAngles:  s.robotJointAngles,
-      snapToGridEnabled: s.snapToGridEnabled,
-      showLabels:        s.showLabels,
-    };
-    setSaveStatus('saving');
-    try {
-      saveScene(sceneName.trim() || 'scene', scene);
-      setSaveStatus('saved');
-      setTimeout(() => setSaveStatus(null), 2000);
-    } catch {
-      setSaveStatus('error');
-      setTimeout(() => setSaveStatus(null), 3000);
-    }
-  }
 
   // ── Section A state ─────────────────────────────────────────────────────
   const [manufacturer, setManufacturer] = useState(manufacturerNames[0]);
@@ -229,12 +201,17 @@ export default function ControlPanel() {
         <button onClick={() => setActiveTab('saves')} className={tabBtnCls(activeTab === 'saves')}>
           SAVES
         </button>
+        <button onClick={() => setActiveTab('general')} className={tabBtnCls(activeTab === 'general')}>
+          GENERAL
+        </button>
       </div>
 
       {/* Scrollable content area */}
       <div className="flex flex-col gap-4 p-4 overflow-y-auto flex-1">
 
-      {activeTab === 'saves' ? (
+      {activeTab === 'general' ? (
+        <SettingsPanel />
+      ) : activeTab === 'saves' ? (
         <ScenesPanel />
       ) : activeTab === 'joints' ? (
         <JointsPanel />
@@ -452,45 +429,7 @@ export default function ControlPanel() {
         </button>
       </div>
 
-      {/* ── D: Save / Load Scene ────────────────────────────────────────── */}
-      <div className={`${sectionCls} border-t border-gray-700 pt-3`}>
-        <p className={labelCls}>Scene File</p>
-
-        {/* Scene name */}
-        <div className="flex flex-col gap-1">
-          <label className="text-xs text-gray-500">Name</label>
-          <input
-            type="text"
-            value={sceneName}
-            onChange={(e) => setSceneName(e.target.value)}
-            placeholder="scene"
-            className={numberCls}
-          />
-        </div>
-
-        <button
-          onClick={handleSaveScene}
-          disabled={saveStatus === 'saving'}
-          className={
-            'w-full font-semibold py-2 px-3 rounded text-sm transition-colors ' +
-            (saveStatus === 'saved'
-              ? 'bg-green-700 text-white'
-              : saveStatus === 'error'
-              ? 'bg-red-800 text-white'
-              : 'bg-gray-700 hover:bg-gray-600 active:bg-gray-800 text-gray-200 disabled:opacity-50')
-          }
-        >
-          {saveStatus === 'saving' ? 'Saving…'
-            : saveStatus === 'saved' ? '✓ Saved'
-            : saveStatus === 'error' ? '✗ Save failed'
-            : '↓ Save Scene'}
-        </button>
-        <p className="text-xs text-gray-600 -mt-1">
-          Saved to browser storage
-        </p>
-      </div>
-
-      {/* ── E: Deployed Robots ───────────────────────────────────────────── */}
+      {/* ── D: Deployed Robots ───────────────────────────────────────────── */}
       <div className={`${sectionCls} border-t border-gray-700 pt-3`}>
         <p className={labelCls}>
           Deployed

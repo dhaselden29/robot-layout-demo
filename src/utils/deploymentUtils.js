@@ -125,6 +125,11 @@ export function loadRobot(
     mountType,
     colorOverride: null,
     opacity: 1.0,
+    gripperId: null,
+    gripperScale: 1.0,
+    parentObjectId: null,
+    parentOffset: null,
+    trackPosition: null,
   };
 }
 
@@ -187,5 +192,10 @@ export function buildRobotInstances(
     mountType,
     colorOverride: null,
     opacity: 1.0,
+    gripperId: null,
+    gripperScale: 1.0,
+    parentObjectId: null,
+    parentOffset: null,
+    trackPosition: null,
   }));
 }

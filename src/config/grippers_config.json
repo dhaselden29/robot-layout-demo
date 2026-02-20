@@ -1,0 +1,44 @@
+{
+  "grippers": [
+    {
+      "id": "vacuum_single",
+      "name": "Vacuum Gripper (Single)",
+      "type": "vacuum",
+      "dimensions": { "bodyRadius": 0.03, "bodyLength": 0.08, "cupRadius": 0.025 },
+      "color": "#607d8b",
+      "mountOffset": { "y": 0 }
+    },
+    {
+      "id": "vacuum_quad",
+      "name": "Vacuum Gripper (Quad)",
+      "type": "vacuum",
+      "dimensions": { "bodyRadius": 0.04, "bodyLength": 0.06, "cupRadius": 0.015, "cupSpacing": 0.04 },
+      "color": "#607d8b",
+      "mountOffset": { "y": 0 }
+    },
+    {
+      "id": "parallel_jaw",
+      "name": "Parallel Jaw Gripper",
+      "type": "parallel_jaw",
+      "dimensions": { "bodyWidth": 0.08, "bodyDepth": 0.05, "bodyLength": 0.06, "fingerWidth": 0.012, "fingerLength": 0.05, "fingerGap": 0.04 },
+      "color": "#455a64",
+      "mountOffset": { "y": 0 }
+    },
+    {
+      "id": "magnetic_disc",
+      "name": "Magnetic Gripper",
+      "type": "magnetic",
+      "dimensions": { "housingRadius": 0.035, "housingLength": 0.05, "discRadius": 0.045, "discThickness": 0.01 },
+      "color": "#37474f",
+      "mountOffset": { "y": 0 }
+    },
+    {
+      "id": "welding_torch",
+      "name": "Welding Torch",
+      "type": "welding_torch",
+      "dimensions": { "bodyRadius": 0.02, "bodyLength": 0.12, "nozzleRadius": 0.008, "nozzleLength": 0.04 },
+      "color": "#1565c0",
+      "mountOffset": { "y": 0 }
+    }
+  ]
+}

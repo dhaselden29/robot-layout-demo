@@ -21,6 +21,7 @@ export default function LinearTrackShape({
   carriageWidth = 0.35,
   color = '#808080',
   opacity = 1,
+  carriagePositions = [0.5],
 }) {
   const transparent = opacity < 1;
 
@@ -78,29 +79,37 @@ export default function LinearTrackShape({
         <meshStandardMaterial {...railMat} />
       </mesh>
 
-      {/* Carriage mounting plate */}
-      <mesh position={[0, plateY, 0]} castShadow receiveShadow>
-        <boxGeometry args={[carriageLength, plateThick, carriageWidth]} />
-        <meshStandardMaterial {...plateMat} />
-      </mesh>
+      {/* Carriage(s) — one per bound robot, or one at default position */}
+      {carriagePositions.map((pos, i) => {
+        const carriageX = (pos - 0.5) * length;
+        return (
+          <group key={i} position={[carriageX, 0, 0]}>
+            {/* Carriage mounting plate */}
+            <mesh position={[0, plateY, 0]} castShadow receiveShadow>
+              <boxGeometry args={[carriageLength, plateThick, carriageWidth]} />
+              <meshStandardMaterial {...plateMat} />
+            </mesh>
 
-      {/* Guide blocks (4 corners) */}
-      <mesh position={[blockXOff, blockY, railZ]} castShadow>
-        <boxGeometry args={[blockL, blockH, blockW]} />
-        <meshStandardMaterial {...blockMat} />
-      </mesh>
-      <mesh position={[-blockXOff, blockY, railZ]} castShadow>
-        <boxGeometry args={[blockL, blockH, blockW]} />
-        <meshStandardMaterial {...blockMat} />
-      </mesh>
-      <mesh position={[blockXOff, blockY, -railZ]} castShadow>
-        <boxGeometry args={[blockL, blockH, blockW]} />
-        <meshStandardMaterial {...blockMat} />
-      </mesh>
-      <mesh position={[-blockXOff, blockY, -railZ]} castShadow>
-        <boxGeometry args={[blockL, blockH, blockW]} />
-        <meshStandardMaterial {...blockMat} />
-      </mesh>
+            {/* Guide blocks (4 corners) */}
+            <mesh position={[blockXOff, blockY, railZ]} castShadow>
+              <boxGeometry args={[blockL, blockH, blockW]} />
+              <meshStandardMaterial {...blockMat} />
+            </mesh>
+            <mesh position={[-blockXOff, blockY, railZ]} castShadow>
+              <boxGeometry args={[blockL, blockH, blockW]} />
+              <meshStandardMaterial {...blockMat} />
+            </mesh>
+            <mesh position={[blockXOff, blockY, -railZ]} castShadow>
+              <boxGeometry args={[blockL, blockH, blockW]} />
+              <meshStandardMaterial {...blockMat} />
+            </mesh>
+            <mesh position={[-blockXOff, blockY, -railZ]} castShadow>
+              <boxGeometry args={[blockL, blockH, blockW]} />
+              <meshStandardMaterial {...blockMat} />
+            </mesh>
+          </group>
+        );
+      })}
 
       {/* End stop - positive X */}
       <mesh position={[stopX, stopY, 0]} castShadow>

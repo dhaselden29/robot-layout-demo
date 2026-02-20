@@ -95,6 +95,7 @@ export default function JointsPanel() {
   const robotJointMeta = useSceneStore((s) => s.robotJointMeta);
   const robotJointAngles = useSceneStore((s) => s.robotJointAngles);
   const clearRobotJoints = useSceneStore((s) => s.clearRobotJoints);
+  const setRobotTrackPosition = useSceneStore((s) => s.setRobotTrackPosition);
   const storeSelectedRobotId = useSceneStore((s) => s.selectedRobotId);
 
   const [selectedRobotId, setSelectedRobotId] = useState(null);
@@ -149,6 +150,31 @@ export default function JointsPanel() {
           ))}
         </select>
       </div>
+
+      {/* ── Track position (7th axis) ─────────────────────────────────── */}
+      {robot && robot.trackPosition !== null && robot.trackPosition !== undefined && (
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-between">
+            <p className={labelCls}>Track Position (7th Axis)</p>
+            <span className="text-xs text-green-300 font-mono">
+              {Math.round(robot.trackPosition * 100)}%
+            </span>
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            step={1}
+            value={Math.round(robot.trackPosition * 100)}
+            onChange={(e) => setRobotTrackPosition(selectedRobotId, Number(e.target.value) / 100)}
+            className="w-full accent-green-500"
+          />
+          <div className="flex justify-between text-xs text-gray-600 -mt-0.5">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      )}
 
       {/* ── Joint controls ──────────────────────────────────────────────── */}
       {robot && (

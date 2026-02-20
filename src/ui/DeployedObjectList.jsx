@@ -266,6 +266,7 @@ export default function DeployedObjectList() {
   const setSelectedObjectId = useSceneStore((s) => s.setSelectedObjectId);
   const setInteractionMode = useSceneStore((s) => s.setInteractionMode);
   const setPendingMountTarget = useSceneStore((s) => s.setPendingMountTarget);
+  const setPendingBindTarget = useSceneStore((s) => s.setPendingBindTarget);
   const setActiveSidebarTab = useSceneStore((s) => s.setActiveSidebarTab);
 
   function handleDrag(id) {
@@ -281,6 +282,8 @@ export default function DeployedObjectList() {
       y: object.position[1],
       z: surfaceZ,
     });
+    // Phase 7: Also set bind target so deployed robots are auto-bound
+    setPendingBindTarget({ objectId: object.id });
     setActiveSidebarTab('robot');
   }
 

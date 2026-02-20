@@ -39,7 +39,7 @@ import useSceneStore from '../store/sceneStore';
 // infinite re-render loop via Object.is change detection).
 const EMPTY_JOINT_ANGLES = {};
 
-export default function URDFRobot({ urdf, packageMap, manufacturer, approxHeight, mountType = 'floor', colorOverride = null, opacity = 1, robotId }) {
+export default function URDFRobot({ urdf, packageMap, manufacturer, approxHeight, mountType = 'floor', colorOverride = null, opacity = 1, robotId, onRobotLoaded }) {
   const [robotObject, setRobotObject] = useState(null);
   const [failed, setFailed] = useState(false);
 
@@ -113,6 +113,7 @@ export default function URDFRobot({ urdf, packageMap, manufacturer, approxHeight
           useSceneStore.getState().setRobotJointMeta(robotId, meta);
         }
         setRobotObject(robot);
+        if (onRobotLoaded) onRobotLoaded(robot);
       },
       undefined,
       (err) => {

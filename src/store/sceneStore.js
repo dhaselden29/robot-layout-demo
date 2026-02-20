@@ -257,26 +257,54 @@ const useSceneStore = create((set) => ({
 
   /**
    * Removes a single scene object by id. Clears selection if it was selected.
+   * Phase 7: Unbinds any robots that were bound to this object (keeps them at current position).
    * @param {string} id - e.g. "o-3"
    */
   removeObject: (id) =>
     set((state) => ({
       sceneObjects: state.sceneObjects.filter((o) => o.id !== id),
       selectedObjectId: state.selectedObjectId === id ? null : state.selectedObjectId,
+      deployedRobots: state.deployedRobots.map((r) =>
+        r.parentObjectId === id
+          ? { ...r, parentObjectId: null, parentOffset: null, trackPosition: null }
+          : r
+      ),
     })),
 
   /**
    * Updates position and rotation for a single scene object.
+   * Phase 7: Also cascades to any robots bound to this object —
+   * recomputes their absolute positions from parentOffset.
    * @param {string}   id       - Object instance id
    * @param {number[]} position - Spec [x, y, z]
    * @param {number}   rotation - Heading in degrees
    */
   updateObjectTransform: (id, position, rotation) =>
-    set((state) => ({
-      sceneObjects: state.sceneObjects.map((o) =>
+    set((state) => {
+      const newObjects = state.sceneObjects.map((o) =>
         o.id === id ? { ...o, position, rotation } : o
-      ),
-    })),
+      );
+
+      // Cascade to bound robots
+      const parentRotRad = (rotation ?? 0) * (Math.PI / 180);
+      const cosR = Math.cos(parentRotRad);
+      const sinR = Math.sin(parentRotRad);
+
+      const newRobots = state.deployedRobots.map((r) => {
+        if (r.parentObjectId !== id || !r.parentOffset) return r;
+        const { dx, dy, dRot } = r.parentOffset;
+        const worldX = position[0] + dx * cosR - dy * sinR;
+        const worldY = position[1] + dx * sinR + dy * cosR;
+        const worldRot = (((rotation ?? 0) + dRot) % 360 + 360) % 360;
+        return {
+          ...r,
+          position: [Math.round(worldX * 100) / 100, Math.round(worldY * 100) / 100, r.position[2]],
+          rotation: worldRot,
+        };
+      });
+
+      return { sceneObjects: newObjects, deployedRobots: newRobots };
+    }),
 
   /**
    * Updates dimension overrides for a single scene object.
@@ -303,14 +331,19 @@ const useSceneStore = create((set) => ({
     })),
 
   /**
-   * Clears only scene objects. Robots are untouched.
+   * Clears only scene objects. Phase 7: unbinds all robots (keeps them at current positions).
    */
   clearObjects: () =>
-    set({
+    set((state) => ({
       sceneObjects: [],
       nextObjectId: 1,
       selectedObjectId: null,
-    }),
+      deployedRobots: state.deployedRobots.map((r) =>
+        r.parentObjectId
+          ? { ...r, parentObjectId: null, parentOffset: null, trackPosition: null }
+          : r
+      ),
+    })),
 
   /**
    * ID of the currently selected scene object, or null.
@@ -359,7 +392,14 @@ const useSceneStore = create((set) => ({
    */
   restoreScene: (data) =>
     set((s) => ({
-      deployedRobots:    data.deployedRobots    ?? [],
+      deployedRobots: (data.deployedRobots ?? []).map((r) => ({
+        gripperId: null,
+        gripperScale: 1.0,
+        parentObjectId: null,
+        parentOffset: null,
+        trackPosition: null,
+        ...r,
+      })),
       sceneObjects:      data.sceneObjects      ?? [],
       nextRobotId:       data.nextRobotId       ?? 1,
       nextObjectId:      data.nextObjectId      ?? 1,
@@ -406,6 +446,169 @@ const useSceneStore = create((set) => ({
   pendingMountTarget: null,
   setPendingMountTarget: (target) => set({ pendingMountTarget: target }),
   clearPendingMountTarget: () => set({ pendingMountTarget: null }),
+
+  // ─── Pending bind target (Phase 7) ──────────────────────────────────────
+
+  /**
+   * Set alongside pendingMountTarget when "Mount Robot Here" is clicked.
+   * After deploy, the newly created robots are auto-bound to this object.
+   * Shape: { objectId: string } | null
+   */
+  pendingBindTarget: null,
+  setPendingBindTarget: (target) => set({ pendingBindTarget: target }),
+  clearPendingBindTarget: () => set({ pendingBindTarget: null }),
+
+  // ─── Gripper attachment (Phase 7) ───────────────────────────────────────
+
+  /**
+   * Sets the gripper type for a robot. Pass null to detach.
+   * @param {string} robotId   - e.g. "r-1"
+   * @param {string|null} gripperId - e.g. "parallel_jaw" or null
+   */
+  setRobotGripper: (robotId, gripperId) =>
+    set((state) => ({
+      deployedRobots: state.deployedRobots.map((r) =>
+        r.id === robotId ? { ...r, gripperId } : r
+      ),
+    })),
+
+  /**
+   * Sets the gripper scale for a robot (0.5–3.0).
+   * @param {string} robotId      - e.g. "r-1"
+   * @param {number} gripperScale - scale factor
+   */
+  setRobotGripperScale: (robotId, gripperScale) =>
+    set((state) => ({
+      deployedRobots: state.deployedRobots.map((r) =>
+        r.id === robotId ? { ...r, gripperScale } : r
+      ),
+    })),
+
+  // ─── Robot-to-base binding (Phase 7) ────────────────────────────────────
+
+  /**
+   * Binds a robot to a scene object. Computes the local offset (dx, dy, dRot)
+   * from the parent's position/rotation to the robot's current position/rotation.
+   * For track-type objects, also sets trackPosition to 0.5 (midpoint).
+   * @param {string} robotId  - e.g. "r-1"
+   * @param {string} objectId - e.g. "o-3"
+   */
+  bindRobotToObject: (robotId, objectId) =>
+    set((state) => {
+      const robot = state.deployedRobots.find((r) => r.id === robotId);
+      const object = state.sceneObjects.find((o) => o.id === objectId);
+      if (!robot || !object) return {};
+
+      const isTrack = object.shape === 'linear_track';
+      const parentRotRad = (object.rotation ?? 0) * (Math.PI / 180);
+
+      if (isTrack) {
+        // Snap robot to track midpoint and align to carriage surface
+        const trackLength = object.dimensions?.length ?? 5;
+        const trackHeight = object.dimensions?.height ?? 0.15;
+        const carriageSurfaceZ = object.position[2] + trackHeight + 0.012;
+        const localDx = 0; // midpoint
+        const localDy = 0; // centred on track
+        const dRot = 0;    // aligned with track
+
+        // Convert midpoint to world coords
+        const cosR = Math.cos(parentRotRad);
+        const sinR = Math.sin(parentRotRad);
+        const worldX = object.position[0] + localDx * cosR - localDy * sinR;
+        const worldY = object.position[1] + localDx * sinR + localDy * cosR;
+        const worldRot = (object.rotation ?? 0) % 360;
+
+        return {
+          deployedRobots: state.deployedRobots.map((r) =>
+            r.id === robotId
+              ? {
+                  ...r,
+                  parentObjectId: objectId,
+                  parentOffset: { dx: localDx, dy: localDy, dRot },
+                  trackPosition: 0.5,
+                  position: [Math.round(worldX * 100) / 100, Math.round(worldY * 100) / 100, carriageSurfaceZ],
+                  rotation: worldRot,
+                  mountType: 'platform',
+                }
+              : r
+          ),
+        };
+      }
+
+      // Non-track binding: compute local offset from current positions
+      const gdx = robot.position[0] - object.position[0];
+      const gdy = robot.position[1] - object.position[1];
+      const cosR = Math.cos(-parentRotRad);
+      const sinR = Math.sin(-parentRotRad);
+      const localDx = gdx * cosR - gdy * sinR;
+      const localDy = gdx * sinR + gdy * cosR;
+      const dRot = ((robot.rotation - (object.rotation ?? 0)) % 360 + 360) % 360;
+
+      return {
+        deployedRobots: state.deployedRobots.map((r) =>
+          r.id === robotId
+            ? { ...r, parentObjectId: objectId, parentOffset: { dx: localDx, dy: localDy, dRot }, trackPosition: null }
+            : r
+        ),
+      };
+    }),
+
+  /**
+   * Unbinds a robot from its parent object, keeping it at its current position.
+   * @param {string} robotId - e.g. "r-1"
+   */
+  unbindRobot: (robotId) =>
+    set((state) => ({
+      deployedRobots: state.deployedRobots.map((r) =>
+        r.id === robotId
+          ? { ...r, parentObjectId: null, parentOffset: null, trackPosition: null }
+          : r
+      ),
+    })),
+
+  /**
+   * Sets the track position (0–1) for a bound robot and recomputes its absolute position.
+   * @param {string} robotId - e.g. "r-1"
+   * @param {number} pos     - 0.0 to 1.0
+   */
+  setRobotTrackPosition: (robotId, pos) =>
+    set((state) => {
+      const robot = state.deployedRobots.find((r) => r.id === robotId);
+      if (!robot || !robot.parentObjectId) return {};
+      const object = state.sceneObjects.find((o) => o.id === robot.parentObjectId);
+      if (!object || object.shape !== 'linear_track') return {};
+
+      const trackLength = object.dimensions?.length ?? 5;
+      const localDx = (pos - 0.5) * trackLength;
+      const localDy = robot.parentOffset?.dy ?? 0;
+      const dRot = robot.parentOffset?.dRot ?? 0;
+
+      // Convert local offset back to world coords
+      const parentRotRad = (object.rotation ?? 0) * (Math.PI / 180);
+      const cosR = Math.cos(parentRotRad);
+      const sinR = Math.sin(parentRotRad);
+      const worldX = object.position[0] + localDx * cosR - localDy * sinR;
+      const worldY = object.position[1] + localDx * sinR + localDy * cosR;
+      const worldRot = ((object.rotation ?? 0) + dRot) % 360;
+
+      return {
+        deployedRobots: state.deployedRobots.map((r) =>
+          r.id === robotId
+            ? {
+                ...r,
+                trackPosition: pos,
+                parentOffset: { ...r.parentOffset, dx: localDx },
+                position: [
+                  Math.round(worldX * 100) / 100,
+                  Math.round(worldY * 100) / 100,
+                  r.position[2],
+                ],
+                rotation: worldRot,
+              }
+            : r
+        ),
+      };
+    }),
 }));
 
 export default useSceneStore;

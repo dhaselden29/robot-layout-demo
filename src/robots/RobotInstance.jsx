@@ -35,6 +35,7 @@ import { useEffect, useRef, useState } from 'react';
 import config from '../config/config.json';
 import robotsConfig from '../config/robots_config.json';
 import useSceneStore from '../store/sceneStore';
+import GripperAttachment from '../scene/GripperAttachment';
 import PlaceholderRobot from './PlaceholderRobot';
 import RobotLoader from './RobotLoader';
 import URDFRobot from './URDFRobot';
@@ -51,6 +52,7 @@ export default function RobotInstance({ robot, approxHeight, registerRef }) {
   const outerGroupRef = useRef();
 
   const [hovered, setHovered] = useState(false);
+  const [robotObject, setRobotObject] = useState(null);
 
   const setSelectedRobotId = useSceneStore((s) => s.setSelectedRobotId);
   const setInteractionMode = useSceneStore((s) => s.setInteractionMode);
@@ -119,6 +121,7 @@ export default function RobotInstance({ robot, approxHeight, registerRef }) {
           colorOverride={colorOverride}
           opacity={opacity}
           robotId={robot.id}
+          onRobotLoaded={setRobotObject}
         />
       );
     }
@@ -143,6 +146,18 @@ export default function RobotInstance({ robot, approxHeight, registerRef }) {
       <group scale={[scale, scale, scale]}>
         {renderModel()}
       </group>
+
+      {/* Phase 7: Gripper attachment — imperatively added to URDF wrist link */}
+      {robot.gripperId && robotObject && (
+        <GripperAttachment
+          robotObject={robotObject}
+          gripperId={robot.gripperId}
+          modelId={robot.modelId}
+          colorOverride={robot.colorOverride}
+          opacity={robot.opacity ?? 1}
+          gripperScale={robot.gripperScale ?? 1.0}
+        />
+      )}
 
       {/* PHASE 5: Platform pillar — grey cylinder from floor to robot base.
           In local space the group is at world-Y = position[2], so the

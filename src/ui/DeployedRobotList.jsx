@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import grippersConfig from '../config/grippers_config.json';
 import useSceneStore from '../store/sceneStore';
 
 // Manufacturer default colours (mirrors PlaceholderRobot.jsx)
@@ -26,7 +27,7 @@ const DEFAULT_ROBOT_COLOR = '#546e7a';
 
 // ─── Individual robot row ─────────────────────────────────────────────────────
 
-function RobotRow({ robot, isSelected, onUpdateTransform, onUpdateStyle, onRemove, onFocus, onDrag }) {
+function RobotRow({ robot, isSelected, onUpdateTransform, onUpdateStyle, onRemove, onFocus, onDrag, onSetGripper, onSetGripperScale, onBind, onUnbind, sceneObjects }) {
   const [localX, setLocalX] = useState(robot.position[0]);
   const [localY, setLocalY] = useState(robot.position[1]);
   const [localZ, setLocalZ] = useState(robot.position[2]);
@@ -155,6 +156,72 @@ function RobotRow({ robot, isSelected, onUpdateTransform, onUpdateStyle, onRemov
         </label>
       </div>
 
+      {/* Gripper selector */}
+      <div className="flex items-center gap-1.5 text-xs text-gray-400">
+        <span className="flex-shrink-0">Tool</span>
+        <select
+          value={robot.gripperId ?? ''}
+          onChange={(e) => onSetGripper(robot.id, e.target.value || null)}
+          className="flex-1 bg-gray-700 border border-gray-600 rounded px-1 py-0.5 text-xs text-gray-100 focus:outline-none focus:border-blue-500"
+        >
+          <option value="">None</option>
+          {grippersConfig.grippers.map((g) => (
+            <option key={g.id} value={g.id}>{g.name}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Gripper scale — only shown when a gripper is attached */}
+      {robot.gripperId && (
+        <div className="flex items-center gap-1.5 text-xs text-gray-400">
+          <span className="flex-shrink-0">Size</span>
+          <input
+            type="range"
+            min="0.5"
+            max="3"
+            step="0.1"
+            value={robot.gripperScale ?? 1.0}
+            onChange={(e) => onSetGripperScale(robot.id, Number(e.target.value))}
+            className="flex-1 accent-blue-500"
+          />
+          <span className="w-9 text-right flex-shrink-0">
+            {(robot.gripperScale ?? 1.0).toFixed(1)}x
+          </span>
+        </div>
+      )}
+
+      {/* 7th Axis / binding controls */}
+      {robot.parentObjectId ? (
+        <div className="flex items-center gap-1.5 text-xs">
+          <span className="text-green-400 truncate flex-1">
+            7th Axis: {sceneObjects.find((o) => o.id === robot.parentObjectId)?.label ?? robot.parentObjectId}
+          </span>
+          <button
+            onClick={() => onUnbind(robot.id)}
+            className="text-xs text-red-400 hover:text-red-300 px-1 py-0.5 rounded hover:bg-gray-700 transition-colors flex-shrink-0"
+          >
+            Unbind
+          </button>
+        </div>
+      ) : (() => {
+        const tracks = sceneObjects.filter((o) => o.shape === 'linear_track');
+        return tracks.length > 0 ? (
+          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+            <span className="flex-shrink-0">7th Axis</span>
+            <select
+              value=""
+              onChange={(e) => { if (e.target.value) onBind(robot.id, e.target.value); }}
+              className="flex-1 bg-gray-700 border border-gray-600 rounded px-1 py-0.5 text-xs text-gray-100 focus:outline-none focus:border-blue-500"
+            >
+              <option value="">-- Select track --</option>
+              {tracks.map((o) => (
+                <option key={o.id} value={o.id}>{o.label}</option>
+              ))}
+            </select>
+          </div>
+        ) : null;
+      })()}
+
       {/* Position inputs */}
       <div className="flex items-center gap-1.5 text-xs text-gray-400">
         <span>X</span>
@@ -230,6 +297,7 @@ function RobotRow({ robot, isSelected, onUpdateTransform, onUpdateStyle, onRemov
 
 export default function DeployedRobotList() {
   const deployedRobots = useSceneStore((s) => s.deployedRobots);
+  const sceneObjects = useSceneStore((s) => s.sceneObjects);
   const updateRobotTransform = useSceneStore((s) => s.updateRobotTransform);
   const updateRobotStyle = useSceneStore((s) => s.updateRobotStyle);
   const removeRobot = useSceneStore((s) => s.removeRobot);
@@ -237,6 +305,10 @@ export default function DeployedRobotList() {
   const selectedRobotId = useSceneStore((s) => s.selectedRobotId);
   const setSelectedRobotId = useSceneStore((s) => s.setSelectedRobotId);
   const setInteractionMode = useSceneStore((s) => s.setInteractionMode);
+  const setRobotGripper = useSceneStore((s) => s.setRobotGripper);
+  const setRobotGripperScale = useSceneStore((s) => s.setRobotGripperScale);
+  const bindRobotToObject = useSceneStore((s) => s.bindRobotToObject);
+  const unbindRobot = useSceneStore((s) => s.unbindRobot);
 
   function handleDrag(id) {
     setSelectedRobotId(id);
@@ -263,6 +335,11 @@ export default function DeployedRobotList() {
           onRemove={removeRobot}
           onFocus={setFocusTarget}
           onDrag={handleDrag}
+          onSetGripper={setRobotGripper}
+          onSetGripperScale={setRobotGripperScale}
+          onBind={bindRobotToObject}
+          onUnbind={unbindRobot}
+          sceneObjects={sceneObjects}
         />
       ))}
     </div>

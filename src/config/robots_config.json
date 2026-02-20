@@ -12,7 +12,8 @@
           "reach_mm": 500,
           "payload_kg": 3,
           "type": "articulated_arm",
-          "approxHeight": 0.7
+          "approxHeight": 0.7,
+          "lastLinkName": "wrist_3_link"
         },
         {
           "id": "ur5e",
@@ -24,7 +25,8 @@
           "reach_mm": 850,
           "payload_kg": 5,
           "type": "articulated_arm",
-          "approxHeight": 1.3
+          "approxHeight": 1.3,
+          "lastLinkName": "wrist_3_link"
         },
         {
           "id": "ur10e",
@@ -36,7 +38,8 @@
           "reach_mm": 1300,
           "payload_kg": 12.5,
           "type": "articulated_arm",
-          "approxHeight": 1.5
+          "approxHeight": 1.5,
+          "lastLinkName": "wrist_3_link"
         },
         {
           "id": "ur16e",
@@ -48,7 +51,8 @@
           "reach_mm": 900,
           "payload_kg": 16,
           "type": "articulated_arm",
-          "approxHeight": 1.3
+          "approxHeight": 1.3,
+          "lastLinkName": "wrist_3_link"
         },
         {
           "id": "ur20",
@@ -60,7 +64,8 @@
           "reach_mm": 1750,
           "payload_kg": 20,
           "type": "articulated_arm",
-          "approxHeight": 1.9
+          "approxHeight": 1.9,
+          "lastLinkName": "wrist_3_link"
         }
       ]
     },
@@ -76,7 +81,8 @@
           "reach_mm": 717,
           "payload_kg": 7,
           "type": "articulated_arm",
-          "approxHeight": 1.0
+          "approxHeight": 1.0,
+          "lastLinkName": "link_6"
         },
         {
           "id": "m10ia",
@@ -88,7 +94,8 @@
           "reach_mm": 1422,
           "payload_kg": 10,
           "type": "articulated_arm",
-          "approxHeight": 1.6
+          "approxHeight": 1.6,
+          "lastLinkName": "link_6"
         },
         {
           "id": "m20ia",
@@ -100,7 +107,8 @@
           "reach_mm": 1811,
           "payload_kg": 20,
           "type": "articulated_arm",
-          "approxHeight": 1.8
+          "approxHeight": 1.8,
+          "lastLinkName": "link_6"
         },
         {
           "id": "cr7ia",
@@ -112,7 +120,8 @@
           "reach_mm": 717,
           "payload_kg": 7,
           "type": "collaborative_arm",
-          "approxHeight": 1.0
+          "approxHeight": 1.0,
+          "lastLinkName": "link_6"
         },
         {
           "id": "m710ic50",
@@ -124,7 +133,8 @@
           "reach_mm": 2050,
           "payload_kg": 50,
           "type": "articulated_arm",
-          "approxHeight": 2.2
+          "approxHeight": 2.2,
+          "lastLinkName": "link_6"
         },
         {
           "id": "crx10ial",
@@ -136,7 +146,8 @@
           "reach_mm": 1418,
           "payload_kg": 10,
           "type": "collaborative_arm",
-          "approxHeight": 1.4
+          "approxHeight": 1.4,
+          "lastLinkName": "link_6"
         }
       ]
     },
@@ -152,7 +163,8 @@
           "reach_mm": 580,
           "payload_kg": 3,
           "type": "articulated_arm",
-          "approxHeight": 0.9
+          "approxHeight": 0.9,
+          "lastLinkName": "link_6"
         },
         {
           "id": "irb1200",
@@ -164,7 +176,8 @@
           "reach_mm": 900,
           "payload_kg": 5,
           "type": "articulated_arm",
-          "approxHeight": 1.0
+          "approxHeight": 1.0,
+          "lastLinkName": "link_6"
         },
         {
           "id": "irb2400",
@@ -176,7 +189,8 @@
           "reach_mm": 1550,
           "payload_kg": 20,
           "type": "articulated_arm",
-          "approxHeight": 1.8
+          "approxHeight": 1.8,
+          "lastLinkName": "link_6"
         },
         {
           "id": "irb2600",
@@ -188,7 +202,8 @@
           "reach_mm": 1650,
           "payload_kg": 12,
           "type": "articulated_arm",
-          "approxHeight": 1.8
+          "approxHeight": 1.8,
+          "lastLinkName": "link_6"
         },
         {
           "id": "crb15000",
@@ -200,7 +215,8 @@
           "reach_mm": 950,
           "payload_kg": 5,
           "type": "collaborative_arm",
-          "approxHeight": 1.1
+          "approxHeight": 1.1,
+          "lastLinkName": "link_6"
         },
         {
           "id": "irb4400l",
@@ -212,7 +228,8 @@
           "reach_mm": 2430,
           "payload_kg": 30,
           "type": "articulated_arm",
-          "approxHeight": 2.3
+          "approxHeight": 2.3,
+          "lastLinkName": "link_6"
         }
       ]
     }

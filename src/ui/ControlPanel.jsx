@@ -149,6 +149,10 @@ export default function ControlPanel() {
     clearPendingMountTarget();
   }, [pendingMountTarget, clearPendingMountTarget]);
 
+  // ── Pending bind target (Phase 7) ────────────────────────────────────────
+  const pendingBindTarget = useSceneStore((s) => s.pendingBindTarget);
+  const clearPendingBindTarget = useSceneStore((s) => s.clearPendingBindTarget);
+
   // ── Deploy ───────────────────────────────────────────────────────────────
   function handleDeploy() {
     const instances = buildRobotInstances(
@@ -164,6 +168,16 @@ export default function ControlPanel() {
       originZ
     );
     addRobots(instances);
+
+    // Phase 7: Auto-bind newly deployed robots to target object
+    if (pendingBindTarget) {
+      const { bindRobotToObject } = useSceneStore.getState();
+      for (const inst of instances) {
+        bindRobotToObject(inst.id, pendingBindTarget.objectId);
+      }
+      clearPendingBindTarget();
+    }
+
     setMountBanner(null); // clear banner after deploy
   }
 

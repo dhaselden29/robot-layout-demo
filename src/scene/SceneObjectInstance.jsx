@@ -52,6 +52,7 @@ export default function SceneObjectInstance({ object }) {
   const selectedObjectId = useSceneStore((s) => s.selectedObjectId);
   const isSelected = selectedObjectId === object.id;
   const showLabels = useSceneStore((s) => s.showLabels);
+  const deployedRobots = useSceneStore((s) => s.deployedRobots);
 
   // Stamp every descendant with objectId for DragPlane / RotationHandle traversal
   useEffect(() => {
@@ -98,7 +99,13 @@ export default function SceneObjectInstance({ object }) {
       case 'ibeam':     return <IBeamShape {...dimensions} {...styleProps} />;
       case 'pipe':      return <PipeShape {...dimensions} {...styleProps} />;
       case 'cabletray':     return <CableTrayShape {...dimensions} {...styleProps} />;
-      case 'linear_track':     return <LinearTrackShape {...dimensions} {...styleProps} />;
+      case 'linear_track': {
+        const boundRobots = deployedRobots.filter((r) => r.parentObjectId === object.id && r.trackPosition != null);
+        const carriagePositions = boundRobots.length > 0
+          ? boundRobots.map((r) => r.trackPosition)
+          : [0.5];
+        return <LinearTrackShape {...dimensions} {...styleProps} carriagePositions={carriagePositions} />;
+      }
       case 'work_table':       return <WorkTableShape {...dimensions} {...styleProps} />;
       case 'turntable':        return <TurntableShape {...dimensions} {...styleProps} />;
       case 'conveyor':         return <ConveyorShape {...dimensions} {...styleProps} />;

@@ -105,8 +105,14 @@ export default function DragPlane() {
     event.target.setPointerCapture(event.pointerId);
 
     if (interactionMode === 'drag') {
-      const { entity } = resolveSelected();
+      const { entity, isRobot } = resolveSelected();
       if (!entity) return;
+
+      // Phase 7: Unbind robot when dragged directly in viewport
+      if (isRobot && entity.parentObjectId) {
+        useSceneStore.getState().unbindRobot(entity.id);
+      }
+
       dragOffset.current = {
         x: entity.position[0] - event.point.x,
         y: entity.position[1] - event.point.z,

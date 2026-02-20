@@ -59,9 +59,10 @@ export default function URDFRobot({ urdf, packageMap, manufacturer, approxHeight
     const loader = new URDFLoader();
 
     // Resolve package:// URIs:
-    //   package://fanuc_lrmate200id/meshes/... → /models/fanuc/meshes/...
+    //   package://fanuc_lrmate200id/meshes/... → {base}/models/fanuc/meshes/...
+    const base = import.meta.env.BASE_URL;
     loader.packages = Object.fromEntries(
-      Object.entries(packageMap).map(([pkg, subdir]) => [pkg, `/models/${subdir}`])
+      Object.entries(packageMap).map(([pkg, subdir]) => [pkg, `${base}models/${subdir}`])
     );
 
     // Custom mesh loader — handles .stl files.
@@ -95,7 +96,7 @@ export default function URDFRobot({ urdf, packageMap, manufacturer, approxHeight
     };
 
     loader.load(
-      `/models/${urdf}`,
+      `${base}models/${urdf}`,
       (robot) => {
         if (cancelled) return;
         // robot is a URDFRobot (extends THREE.Object3D)

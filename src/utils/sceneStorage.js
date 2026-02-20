@@ -10,6 +10,8 @@
  * At ~2-10 KB per scene, hundreds of scenes fit within the 5-10 MB limit.
  */
 
+import { DEMO_SCENES } from '../config/demoScenes';
+
 const STORAGE_KEY = 'robotlayout_scenes';
 
 /** Read the full scene map from localStorage. Returns {} on empty/error. */
@@ -41,13 +43,17 @@ export function saveScene(name, sceneData) {
 
 /**
  * List all saved scenes, sorted newest first.
- * @returns {{ name: string, savedAt: string }[]}
+ * Built-in demo scenes are appended at the end with isDemo=true.
+ * @returns {{ name: string, savedAt: string, isDemo?: boolean }[]}
  */
 export function listScenes() {
   const map = readMap();
-  return Object.entries(map)
+  const userScenes = Object.entries(map)
     .map(([name, data]) => ({ name, savedAt: data.savedAt || '' }))
     .sort((a, b) => (b.savedAt > a.savedAt ? 1 : -1));
+  const demoScenes = Object.entries(DEMO_SCENES)
+    .map(([name, data]) => ({ name, savedAt: data.savedAt || '', isDemo: true }));
+  return [...userScenes, ...demoScenes];
 }
 
 /**
@@ -56,6 +62,7 @@ export function listScenes() {
  * @returns {object|null}  Full scene object, or null if not found.
  */
 export function loadScene(name) {
+  if (DEMO_SCENES[name]) return DEMO_SCENES[name];
   const map = readMap();
   return map[name] ?? null;
 }

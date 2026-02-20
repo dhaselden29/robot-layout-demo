@@ -154,13 +154,22 @@ export default function ScenesPanel() {
               key={scene.name}
               className="flex flex-col gap-1.5 bg-gray-800 border border-gray-700 rounded px-3 py-2"
             >
-              {/* Name */}
-              <p className="text-sm text-gray-100 font-medium truncate" title={scene.name}>
-                {scene.name}
-              </p>
+              {/* Name + demo badge */}
+              <div className="flex items-center gap-1.5">
+                <p className="text-sm text-gray-100 font-medium truncate" title={scene.name}>
+                  {scene.name}
+                </p>
+                {scene.isDemo && (
+                  <span className="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wider bg-teal-800 text-teal-200 px-1.5 py-0.5 rounded">
+                    Demo
+                  </span>
+                )}
+              </div>
 
-              {/* Date */}
-              <p className="text-xs text-gray-500">{formatDate(scene.savedAt)}</p>
+              {/* Date — hide for demo scenes */}
+              {!scene.isDemo && (
+                <p className="text-xs text-gray-500">{formatDate(scene.savedAt)}</p>
+              )}
 
               {/* Actions */}
               <div className="flex gap-1.5 mt-0.5">
@@ -181,15 +190,17 @@ export default function ScenesPanel() {
                 >
                   Export
                 </button>
-                <button
-                  onClick={() => handleDelete(scene.name)}
-                  disabled={deletingName === scene.name}
-                  className={btnCls(
-                    'bg-gray-700 hover:bg-red-800 text-gray-300 hover:text-white disabled:opacity-50'
-                  )}
-                >
-                  {deletingName === scene.name ? '\u2026' : 'Delete'}
-                </button>
+                {!scene.isDemo && (
+                  <button
+                    onClick={() => handleDelete(scene.name)}
+                    disabled={deletingName === scene.name}
+                    className={btnCls(
+                      'bg-gray-700 hover:bg-red-800 text-gray-300 hover:text-white disabled:opacity-50'
+                    )}
+                  >
+                    {deletingName === scene.name ? '\u2026' : 'Delete'}
+                  </button>
+                )}
               </div>
             </div>
           ))}

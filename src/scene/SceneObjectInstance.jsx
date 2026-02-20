@@ -27,10 +27,17 @@ import useSceneStore from '../store/sceneStore';
 import { getObjectLabelHeight } from '../utils/objectUtils';
 import BoxShape from './shapes/BoxShape';
 import CableTrayShape from './shapes/CableTrayShape';
+import ConveyorShape from './shapes/ConveyorShape';
 import CylinderShape from './shapes/CylinderShape';
 import IBeamShape from './shapes/IBeamShape';
+import LinearTrackShape from './shapes/LinearTrackShape';
+import OperatorStationShape from './shapes/OperatorStationShape';
+import PalletShape from './shapes/PalletShape';
 import PipeShape from './shapes/PipeShape';
+import SafetyFenceShape from './shapes/SafetyFenceShape';
 import SphereShape from './shapes/SphereShape';
+import TurntableShape from './shapes/TurntableShape';
+import WorkTableShape from './shapes/WorkTableShape';
 
 const DEG2RAD = Math.PI / 180;
 
@@ -70,7 +77,7 @@ export default function SceneObjectInstance({ object }) {
 
   // Selection ring footprint — largest horizontal extent
   const footprint =
-    shape === 'cylinder' || shape === 'sphere'
+    shape === 'cylinder' || shape === 'sphere' || shape === 'turntable'
       ? (dimensions.radius ?? 0.5) * 2
       : Math.max(dimensions.length ?? 1, dimensions.width ?? 1);
   const ringOuter = Math.max(footprint * 0.6, 0.3);
@@ -90,8 +97,15 @@ export default function SceneObjectInstance({ object }) {
       case 'sphere':    return <SphereShape {...dimensions} {...styleProps} />;
       case 'ibeam':     return <IBeamShape {...dimensions} {...styleProps} />;
       case 'pipe':      return <PipeShape {...dimensions} {...styleProps} />;
-      case 'cabletray': return <CableTrayShape {...dimensions} {...styleProps} />;
-      default:          return null;
+      case 'cabletray':     return <CableTrayShape {...dimensions} {...styleProps} />;
+      case 'linear_track':     return <LinearTrackShape {...dimensions} {...styleProps} />;
+      case 'work_table':       return <WorkTableShape {...dimensions} {...styleProps} />;
+      case 'turntable':        return <TurntableShape {...dimensions} {...styleProps} />;
+      case 'conveyor':         return <ConveyorShape {...dimensions} {...styleProps} />;
+      case 'safety_fence':     return <SafetyFenceShape {...dimensions} {...styleProps} />;
+      case 'pallet':           return <PalletShape {...dimensions} {...styleProps} />;
+      case 'operator_station': return <OperatorStationShape {...dimensions} {...styleProps} />;
+      default:                 return null;
     }
   }
 

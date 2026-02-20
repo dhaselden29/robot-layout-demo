@@ -3,6 +3,18 @@
     "Universal Robots": {
       "models": [
         {
+          "id": "ur3e",
+          "name": "UR3e",
+          "urdf": "universal_robots/ur3e.urdf",
+          "packageMap": { "ur3e": "universal_robots/ur3e" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.128, 0.128],
+          "reach_mm": 500,
+          "payload_kg": 3,
+          "type": "articulated_arm",
+          "approxHeight": 0.7
+        },
+        {
           "id": "ur5e",
           "name": "UR5e",
           "urdf": "universal_robots/ur5e.urdf",
@@ -17,15 +29,38 @@
         {
           "id": "ur10e",
           "name": "UR10e",
-          "urdf": null,
-          "packageMap": null,
+          "urdf": "universal_robots/ur10e.urdf",
+          "packageMap": { "ur10e": "universal_robots/ur10e" },
           "defaultScale": 1.0,
           "footprint_m": [0.190, 0.190],
           "reach_mm": 1300,
           "payload_kg": 12.5,
           "type": "articulated_arm",
-          "approxHeight": 1.5,
-          "note": "URDF pending — renders as placeholder"
+          "approxHeight": 1.5
+        },
+        {
+          "id": "ur16e",
+          "name": "UR16e",
+          "urdf": "universal_robots/ur16e.urdf",
+          "packageMap": { "ur16e": "universal_robots/ur16e" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.190, 0.190],
+          "reach_mm": 900,
+          "payload_kg": 16,
+          "type": "articulated_arm",
+          "approxHeight": 1.3
+        },
+        {
+          "id": "ur20",
+          "name": "UR20",
+          "urdf": "universal_robots/ur20.urdf",
+          "packageMap": { "ur20": "universal_robots/ur20" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.245, 0.245],
+          "reach_mm": 1750,
+          "payload_kg": 20,
+          "type": "articulated_arm",
+          "approxHeight": 1.9
         }
       ]
     },
@@ -46,15 +81,62 @@
         {
           "id": "m10ia",
           "name": "M-10iA",
-          "urdf": null,
-          "packageMap": null,
+          "urdf": "fanuc/m10ia.urdf",
+          "packageMap": { "fanuc_m10ia": "fanuc/m10ia" },
           "defaultScale": 1.0,
-          "footprint_m": [0.450, 0.450],
+          "footprint_m": [0.430, 0.430],
           "reach_mm": 1422,
           "payload_kg": 10,
           "type": "articulated_arm",
-          "approxHeight": 1.6,
-          "note": "URDF pending — renders as placeholder"
+          "approxHeight": 1.6
+        },
+        {
+          "id": "m20ia",
+          "name": "M-20iA",
+          "urdf": "fanuc/m20ia.urdf",
+          "packageMap": { "fanuc_m20ia": "fanuc/m20ia" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.520, 0.520],
+          "reach_mm": 1811,
+          "payload_kg": 20,
+          "type": "articulated_arm",
+          "approxHeight": 1.8
+        },
+        {
+          "id": "cr7ia",
+          "name": "CR-7iA",
+          "urdf": "fanuc/cr7ia.urdf",
+          "packageMap": { "fanuc_cr7ia": "fanuc/cr7ia" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.400, 0.400],
+          "reach_mm": 717,
+          "payload_kg": 7,
+          "type": "collaborative_arm",
+          "approxHeight": 1.0
+        },
+        {
+          "id": "m710ic50",
+          "name": "M-710iC/50",
+          "urdf": "fanuc/m710ic50.urdf",
+          "packageMap": { "fanuc_m710ic50": "fanuc/m710ic50" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.600, 0.600],
+          "reach_mm": 2050,
+          "payload_kg": 50,
+          "type": "articulated_arm",
+          "approxHeight": 2.2
+        },
+        {
+          "id": "crx10ial",
+          "name": "CRX-10iA/L",
+          "urdf": "fanuc/crx10ial.urdf",
+          "packageMap": { "fanuc_crx10ial": "fanuc/crx10ial" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.250, 0.250],
+          "reach_mm": 1418,
+          "payload_kg": 10,
+          "type": "collaborative_arm",
+          "approxHeight": 1.4
         }
       ]
     },
@@ -73,17 +155,64 @@
           "approxHeight": 0.9
         },
         {
+          "id": "irb1200",
+          "name": "IRB 1200",
+          "urdf": "abb/irb1200.urdf",
+          "packageMap": { "abb_irb1200": "abb/irb1200" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.200, 0.200],
+          "reach_mm": 900,
+          "payload_kg": 5,
+          "type": "articulated_arm",
+          "approxHeight": 1.0
+        },
+        {
           "id": "irb2400",
           "name": "IRB 2400",
-          "urdf": null,
-          "packageMap": null,
+          "urdf": "abb/irb2400.urdf",
+          "packageMap": { "abb_irb2400": "abb/irb2400" },
           "defaultScale": 1.0,
           "footprint_m": [0.550, 0.550],
           "reach_mm": 1550,
           "payload_kg": 20,
           "type": "articulated_arm",
-          "approxHeight": 1.8,
-          "note": "URDF pending — renders as placeholder"
+          "approxHeight": 1.8
+        },
+        {
+          "id": "irb2600",
+          "name": "IRB 2600",
+          "urdf": "abb/irb2600.urdf",
+          "packageMap": { "abb_irb2600": "abb/irb2600" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.560, 0.560],
+          "reach_mm": 1650,
+          "payload_kg": 12,
+          "type": "articulated_arm",
+          "approxHeight": 1.8
+        },
+        {
+          "id": "crb15000",
+          "name": "CRB 15000 (GoFa)",
+          "urdf": "abb/crb15000.urdf",
+          "packageMap": { "abb_crb15000": "abb/crb15000" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.220, 0.220],
+          "reach_mm": 950,
+          "payload_kg": 5,
+          "type": "collaborative_arm",
+          "approxHeight": 1.1
+        },
+        {
+          "id": "irb4400l",
+          "name": "IRB 4400L",
+          "urdf": "abb/irb4400l.urdf",
+          "packageMap": { "abb_irb4400l": "abb/irb4400l" },
+          "defaultScale": 1.0,
+          "footprint_m": [0.680, 0.680],
+          "reach_mm": 2430,
+          "payload_kg": 30,
+          "type": "articulated_arm",
+          "approxHeight": 2.3
         }
       ]
     }

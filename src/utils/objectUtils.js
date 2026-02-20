@@ -81,8 +81,15 @@ export function getObjectLabelHeight(shape, dimensions) {
     case 'sphere':    return (dimensions.radius ?? 0.5) * 2;
     case 'ibeam':     return dimensions.webHeight ?? 0.1;
     case 'pipe':      return dimensions.outerDiam ?? 0.1;
-    case 'cabletray': return dimensions.height ?? 0.05;
-    default:          return 1;
+    case 'cabletray':     return dimensions.height ?? 0.05;
+    case 'linear_track':     return (dimensions.height ?? 0.15) + 0.012;
+    case 'work_table':       return dimensions.height ?? 0.9;
+    case 'turntable':        return dimensions.height ?? 0.12;
+    case 'conveyor':         return dimensions.height ?? 0.85;
+    case 'safety_fence':     return dimensions.height ?? 1.4;
+    case 'pallet':           return dimensions.height ?? 0.144;
+    case 'operator_station': return dimensions.height ?? 1.1;
+    default:                 return 1;
   }
 }
 
@@ -105,8 +112,15 @@ export function getObjectTopSurface(shape, dimensions) {
     case 'sphere':    return (dimensions.radius ?? 0.5) * 2;
     case 'ibeam':     return dimensions.webHeight ?? 0.1;
     case 'pipe':      return dimensions.outerDiam ?? 0.1;
-    case 'cabletray': return dimensions.height ?? 0.05;
-    default:          return 0;
+    case 'cabletray':     return dimensions.height ?? 0.05;
+    case 'linear_track':     return (dimensions.height ?? 0.15) + 0.012;
+    case 'work_table':       return dimensions.height ?? 0.9;
+    case 'turntable':        return dimensions.height ?? 0.12;
+    case 'conveyor':         return dimensions.height ?? 0.85;
+    case 'safety_fence':     return dimensions.height ?? 1.4;
+    case 'pallet':           return dimensions.height ?? 0.144;
+    case 'operator_station': return (dimensions.height ?? 1.1) * 0.65;
+    default:                 return 0;
   }
 }
 
@@ -146,6 +160,41 @@ export function getEditableDimensions(shape) {
       return [
         { key: 'length', label: 'L', step: 0.1 },
       ];
+    case 'linear_track':
+      return [
+        { key: 'length', label: 'L', step: 0.5 },
+      ];
+    case 'work_table':
+      return [
+        { key: 'length', label: 'L', step: 0.1 },
+        { key: 'width',  label: 'W', step: 0.1 },
+        { key: 'height', label: 'H', step: 0.1 },
+      ];
+    case 'turntable':
+      return [
+        { key: 'radius', label: 'R', step: 0.05 },
+        { key: 'height', label: 'H', step: 0.05 },
+      ];
+    case 'conveyor':
+      return [
+        { key: 'length', label: 'L', step: 0.5 },
+      ];
+    case 'safety_fence':
+      return [
+        { key: 'length', label: 'L', step: 0.5 },
+        { key: 'height', label: 'H', step: 0.1 },
+      ];
+    case 'pallet':
+      return [
+        { key: 'length', label: 'L', step: 0.1 },
+        { key: 'width',  label: 'W', step: 0.1 },
+      ];
+    case 'operator_station':
+      return [
+        { key: 'length', label: 'L', step: 0.1 },
+        { key: 'width',  label: 'W', step: 0.1 },
+        { key: 'height', label: 'H', step: 0.1 },
+      ];
     default:
       return [];
   }
@@ -167,6 +216,12 @@ export function getSpecInfo(shape, dimensions) {
       return `∅ ${Math.round(dimensions.outerDiam * 1000)}mm`;
     case 'cabletray':
       return `W: ${Math.round(dimensions.width * 1000)}mm`;
+    case 'linear_track':
+      return `W: ${Math.round((dimensions.width ?? 0.3) * 1000)}mm  H: ${Math.round((dimensions.height ?? 0.15) * 1000)}mm`;
+    case 'conveyor':
+      return `W: ${Math.round((dimensions.width ?? 0.5) * 1000)}mm  H: ${Math.round((dimensions.height ?? 0.85) * 1000)}mm`;
+    case 'pallet':
+      return `H: ${Math.round((dimensions.height ?? 0.144) * 1000)}mm`;
     default:
       return null;
   }

@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!--
+  ABB IRB 2600 URDF
+  Generated from: ros-industrial/abb abb_irb2600_support/urdf/irb2600_macro.xacro
+  Source: https://github.com/ros-industrial/abb
+  License: BSD 3-Clause
+  Mesh paths resolved to package://abb_irb2600 — maps to /models/abb/irb2600 in the app.
+-->
+<robot name="abb_irb2600">
+
+  <material name="abb_orange">
+    <color rgba="0.898 0.349 0.024 1.0"/>
+  </material>
+  <material name="abb_gray_white">
+    <color rgba="0.7 0.7 0.7 1.0"/>
+  </material>
+
+  <!-- LINKS -->
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb2600/meshes/visual/base_link.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_1">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb2600/meshes/visual/link_1.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb2600/meshes/visual/link_2.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_3">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb2600/meshes/visual/link_3.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_4">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb2600/meshes/visual/link_4.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_5">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb2600/meshes/visual/link_5.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_6">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb2600/meshes/visual/link_6.stl"/>
+      </geometry>
+      <material name="abb_gray_white"/>
+    </visual>
+  </link>
+
+  <!-- JOINTS -->
+
+  <!-- base_link → link_1: 445mm rise -->
+  <joint name="joint_1" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.445"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="0" lower="-3.14159" upper="3.14159" velocity="3.054"/>
+  </joint>
+
+  <!-- link_1 → link_2: 150mm lateral -->
+  <joint name="joint_2" type="revolute">
+    <origin rpy="0 0 0" xyz="0.15 0 0"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-2.705" upper="1.658" velocity="3.054"/>
+  </joint>
+
+  <!-- link_2 → link_3: 700mm rise -->
+  <joint name="joint_3" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.7"/>
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-2.705" upper="1.309" velocity="3.054"/>
+  </joint>
+
+  <!-- link_3 → link_4: 115mm rise -->
+  <joint name="joint_4" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.115"/>
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="-6.981" upper="6.981" velocity="6.283"/>
+  </joint>
+
+  <!-- link_4 → link_5: 795mm reach -->
+  <joint name="joint_5" type="revolute">
+    <origin rpy="0 0 0" xyz="0.795 0 0"/>
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-2.094" upper="2.094" velocity="6.283"/>
+  </joint>
+
+  <!-- link_5 → link_6: 85mm reach -->
+  <joint name="joint_6" type="revolute">
+    <origin rpy="0 0 0" xyz="0.085 0 0"/>
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="-6.981" upper="6.981" velocity="8.727"/>
+  </joint>
+
+</robot>

@@ -259,7 +259,7 @@ export default function EquipmentPanel() {
             type="range"
             min="0"
             max="360"
-            step="1"
+            step="15"
             value={rotationDeg}
             onChange={(e) => setRotationDeg(Number(e.target.value))}
             className="w-full accent-blue-500"

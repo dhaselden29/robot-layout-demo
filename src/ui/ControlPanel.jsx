@@ -24,14 +24,16 @@
  * Reset Scene clears all robots.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import sceneConfig from '../config/config.json';
 import robotsConfig from '../config/robots_config.json';
 import useSceneStore from '../store/sceneStore';
 import { buildRobotInstances } from '../utils/deploymentUtils';
+import { saveScene } from '../utils/sceneStorage';
 import DeployedRobotList from './DeployedRobotList';
 import EquipmentPanel from './EquipmentPanel';
 import JointsPanel from './JointsPanel';
+import ScenesPanel from './ScenesPanel';
 
 const manufacturerNames = Object.keys(robotsConfig.manufacturers);
 const scaleNames = Object.keys(sceneConfig.robots.scales);
@@ -84,13 +86,13 @@ export default function ControlPanel() {
   const showLabels = useSceneStore((s) => s.showLabels);
   const setShowLabels = useSceneStore((s) => s.setShowLabels);
 
-  // ── Scene save / load ─────────────────────────────────────────────────────
+  // ── Scene save ────────────────────────────────────────────────────────────
   const [sceneName, setSceneName] = useState('scene');
-  const fileInputRef = useRef();
+  const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
 
   function handleSaveScene() {
     const s = useSceneStore.getState();
-    const data = {
+    const scene = {
       version: 1,
       savedAt: new Date().toISOString(),
       deployedRobots:    s.deployedRobots,
@@ -101,32 +103,15 @@ export default function ControlPanel() {
       snapToGridEnabled: s.snapToGridEnabled,
       showLabels:        s.showLabels,
     };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${sceneName.trim() || 'scene'}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function handleLoadFile(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      try {
-        const data = JSON.parse(evt.target.result);
-        if (!Array.isArray(data.deployedRobots)) throw new Error('not a scene file');
-        useSceneStore.getState().restoreScene(data);
-        // Use the filename (without extension) as the scene name
-        setSceneName(file.name.replace(/\.json$/i, ''));
-      } catch {
-        alert('Could not load file — make sure it is a valid Robot Layout scene.');
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = ''; // reset so the same file can be reloaded
+    setSaveStatus('saving');
+    try {
+      saveScene(sceneName.trim() || 'scene', scene);
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus(null), 2000);
+    } catch {
+      setSaveStatus('error');
+      setTimeout(() => setSaveStatus(null), 3000);
+    }
   }
 
   // ── Section A state ─────────────────────────────────────────────────────
@@ -241,12 +226,17 @@ export default function ControlPanel() {
         <button onClick={() => setActiveTab('joints')} className={tabBtnCls(activeTab === 'joints')}>
           JOINTS
         </button>
+        <button onClick={() => setActiveTab('saves')} className={tabBtnCls(activeTab === 'saves')}>
+          SAVES
+        </button>
       </div>
 
       {/* Scrollable content area */}
       <div className="flex flex-col gap-4 p-4 overflow-y-auto flex-1">
 
-      {activeTab === 'joints' ? (
+      {activeTab === 'saves' ? (
+        <ScenesPanel />
+      ) : activeTab === 'joints' ? (
         <JointsPanel />
       ) : activeTab === 'equipment' ? (
         <EquipmentPanel />
@@ -478,29 +468,26 @@ export default function ControlPanel() {
           />
         </div>
 
-        <div className="flex gap-2">
-          <button
-            onClick={handleSaveScene}
-            className="flex-1 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 text-gray-200 font-semibold py-2 px-3 rounded text-sm transition-colors"
-          >
-            ↓ Save
-          </button>
-          <button
-            onClick={() => fileInputRef.current.click()}
-            className="flex-1 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 text-gray-200 font-semibold py-2 px-3 rounded text-sm transition-colors"
-          >
-            ↑ Load
-          </button>
-        </div>
-
-        {/* Hidden file input */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          onChange={handleLoadFile}
-          className="hidden"
-        />
+        <button
+          onClick={handleSaveScene}
+          disabled={saveStatus === 'saving'}
+          className={
+            'w-full font-semibold py-2 px-3 rounded text-sm transition-colors ' +
+            (saveStatus === 'saved'
+              ? 'bg-green-700 text-white'
+              : saveStatus === 'error'
+              ? 'bg-red-800 text-white'
+              : 'bg-gray-700 hover:bg-gray-600 active:bg-gray-800 text-gray-200 disabled:opacity-50')
+          }
+        >
+          {saveStatus === 'saving' ? 'Saving…'
+            : saveStatus === 'saved' ? '✓ Saved'
+            : saveStatus === 'error' ? '✗ Save failed'
+            : '↓ Save Scene'}
+        </button>
+        <p className="text-xs text-gray-600 -mt-1">
+          Saved to browser storage
+        </p>
       </div>
 
       {/* ── E: Deployed Robots ───────────────────────────────────────────── */}

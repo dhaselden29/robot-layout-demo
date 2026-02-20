@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!--
+  FANUC CRX-10iA/L URDF
+  Generated from: ros-industrial/fanuc fanuc_crx10ial_support/urdf/crx10ial_macro.xacro
+  Source: https://github.com/ros-industrial/fanuc
+  License: BSD 3-Clause
+  Mesh paths resolved to package://fanuc_crx10ial — maps to /models/fanuc/crx10ial in the app.
+-->
+<robot name="fanuc_crx10ial">
+
+  <material name="fanuc_white">
+    <color rgba="0.9 0.9 0.9 1.0"/>
+  </material>
+  <material name="fanuc_gray">
+    <color rgba="0.28 0.28 0.28 1.0"/>
+  </material>
+
+  <!-- LINKS -->
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_crx10ial/meshes/visual/base_link.stl"/>
+      </geometry>
+      <material name="fanuc_gray"/>
+    </visual>
+  </link>
+
+  <link name="link_1">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_crx10ial/meshes/visual/link_1.stl"/>
+      </geometry>
+      <material name="fanuc_white"/>
+    </visual>
+  </link>
+
+  <link name="link_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_crx10ial/meshes/visual/link_2.stl"/>
+      </geometry>
+      <material name="fanuc_white"/>
+    </visual>
+  </link>
+
+  <link name="link_3">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_crx10ial/meshes/visual/link_3.stl"/>
+      </geometry>
+      <material name="fanuc_white"/>
+    </visual>
+  </link>
+
+  <link name="link_4">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_crx10ial/meshes/visual/link_4.stl"/>
+      </geometry>
+      <material name="fanuc_white"/>
+    </visual>
+  </link>
+
+  <link name="link_5">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_crx10ial/meshes/visual/link_5.stl"/>
+      </geometry>
+      <material name="fanuc_white"/>
+    </visual>
+  </link>
+
+  <link name="link_6">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fanuc_crx10ial/meshes/visual/link_6.stl"/>
+      </geometry>
+      <material name="fanuc_gray"/>
+    </visual>
+  </link>
+
+  <!-- JOINTS (transforms from xacro macro, radians expanded) -->
+
+  <!-- base_link → link_1: 245mm rise -->
+  <joint name="joint_1" type="revolute">
+    <origin xyz="0 0 0.245" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="0" lower="-3.1416" upper="3.1416" velocity="2.0944"/>
+  </joint>
+
+  <!-- link_1 → link_2: no offset -->
+  <joint name="joint_2" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-3.1416" upper="3.1416" velocity="2.0944"/>
+  </joint>
+
+  <!-- link_2 → link_3: 710mm rise -->
+  <joint name="joint_3" type="revolute">
+    <origin xyz="0 0 0.710" rpy="0 0 0"/>
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="0" lower="-4.7124" upper="4.7124" velocity="3.1416"/>
+  </joint>
+
+  <!-- link_3 → link_4: no offset -->
+  <joint name="joint_4" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="0" lower="-3.3161" upper="3.3161" velocity="3.1416"/>
+  </joint>
+
+  <!-- link_4 → link_5: 540mm reach, -150mm Y offset -->
+  <joint name="joint_5" type="revolute">
+    <origin xyz="0.540 -0.150 0" rpy="0 0 0"/>
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="0" lower="-3.1416" upper="3.1416" velocity="3.1416"/>
+  </joint>
+
+  <!-- link_5 → link_6: 160mm reach -->
+  <joint name="joint_6" type="revolute">
+    <origin xyz="0.160 0 0" rpy="0 0 0"/>
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <axis xyz="-1 0 0"/>
+    <limit effort="0" lower="-3.3161" upper="3.3161" velocity="3.1416"/>
+  </joint>
+
+</robot>

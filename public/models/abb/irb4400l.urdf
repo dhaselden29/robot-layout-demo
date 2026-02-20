@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!--
+  ABB IRB 4400L URDF
+  Generated from: ros-industrial/abb abb_irb4400l_support/urdf/irb4400l_macro.xacro
+  Source: https://github.com/ros-industrial/abb
+  License: BSD 3-Clause
+  Mesh paths resolved to package://abb_irb4400l — maps to /models/abb/irb4400l in the app.
+-->
+<robot name="abb_irb4400l">
+
+  <material name="abb_orange">
+    <color rgba="0.898 0.349 0.024 1.0"/>
+  </material>
+  <material name="abb_black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+
+  <!-- LINKS -->
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb4400l/meshes/visual/base_link.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_1">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb4400l/meshes/visual/link_1.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb4400l/meshes/visual/link_2.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_3">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb4400l/meshes/visual/link_3.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_4">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb4400l/meshes/visual/link_4.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_5">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb4400l/meshes/visual/link_5.stl"/>
+      </geometry>
+      <material name="abb_orange"/>
+    </visual>
+  </link>
+
+  <link name="link_6">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://abb_irb4400l/meshes/visual/link_6.stl"/>
+      </geometry>
+      <material name="abb_black"/>
+    </visual>
+  </link>
+
+  <!-- JOINTS -->
+
+  <!-- base_link → link_1: at origin -->
+  <joint name="joint_1" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="0" lower="-2.87979" upper="2.87979" velocity="2.618"/>
+  </joint>
+
+  <!-- link_1 → link_2: 200mm lateral + 680mm rise -->
+  <joint name="joint_2" type="revolute">
+    <origin rpy="0 0 0" xyz="0.2 0 0.68"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-1.2217" upper="1.658" velocity="2.0944"/>
+  </joint>
+
+  <!-- link_2 → link_3: 890mm rise -->
+  <joint name="joint_3" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.89"/>
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-1.0472" upper="1.1345" velocity="2.0944"/>
+  </joint>
+
+  <!-- link_3 → link_4: 1380mm lateral + 150mm rise -->
+  <joint name="joint_4" type="revolute">
+    <origin rpy="0 0 0" xyz="1.38 0 0.15"/>
+    <parent link="link_3"/>
+    <child link="link_4"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="-3.49" upper="3.49" velocity="3.927"/>
+  </joint>
+
+  <!-- link_4 → link_5: at origin -->
+  <joint name="joint_5" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="link_4"/>
+    <child link="link_5"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="0" lower="-2.0944" upper="2.0944" velocity="4.3633"/>
+  </joint>
+
+  <!-- link_5 → link_6: at origin -->
+  <joint name="joint_6" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="link_5"/>
+    <child link="link_6"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0" lower="-6.9813" upper="6.9813" velocity="5.7596"/>
+  </joint>
+
+</robot>

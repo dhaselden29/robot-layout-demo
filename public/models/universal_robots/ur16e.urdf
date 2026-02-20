@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<!--
+  Universal Robots UR16e — URDF (xacro-flattened)
+  Derived from: ros-industrial/universal_robot ur_description (noetic-devel)
+  License: BSD 3-Clause
+  Copyright (c) 2009-2021, Universal Robots A/S. All rights reserved.
+
+  Sources used:
+    urdf/inc/ur_macro.xacro               — link/joint structure, visual origins
+    config/ur16e/default_kinematics.yaml   — joint xyz/rpy transforms
+    config/ur16e/physical_parameters.yaml  — shoulder_offset=0.176, elbow_offset=0.040
+    config/ur16e/visual_parameters.yaml    — wrist visual offsets
+
+  DH parameters:
+    d1=0.1807, a2=-0.4784, a3=-0.36, d4=0.17415, d5=-0.11985, d6=0.11655
+
+  Package map in robots_config.json: { "ur16e": "universal_robots" }
+  So  package://ur16e/meshes/...  →  /models/universal_robots/meshes/...
+
+  CRITICAL: wrist_3_link visual origin is xyz="0 0 0" (not the YAML offset value,
+  which causes a visible mesh gap between wrist_2 and wrist_3).
+-->
+<robot name="ur16e">
+
+  <material name="ur_lightgrey">
+    <color rgba="0.7 0.7 0.7 1.0"/>
+  </material>
+  <material name="ur_darkgrey">
+    <color rgba="0.35 0.35 0.35 1.0"/>
+  </material>
+
+  <!-- ===== LINKS ===== -->
+
+  <!-- base_link: empty REP-103 reference frame (no mesh) -->
+  <link name="base_link"/>
+
+  <!-- base_link_inertia: carries the base mesh; rotated pi around Z from base_link
+       so that the robot's X+ axis faces forward per ROS REP-103 convention -->
+  <link name="base_link_inertia">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 3.14159"/>
+      <geometry>
+        <mesh filename="package://ur16e/meshes/visual/base.stl"/>
+      </geometry>
+      <material name="ur_lightgrey"/>
+    </visual>
+  </link>
+
+  <link name="shoulder_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 3.14159"/>
+      <geometry>
+        <mesh filename="package://ur16e/meshes/visual/shoulder.stl"/>
+      </geometry>
+      <material name="ur_lightgrey"/>
+    </visual>
+  </link>
+
+  <!-- upper_arm: mesh origin offset by shoulder_offset=0.176m along Z,
+       rotated pi/2 around X and -pi/2 around Z to align geometry -->
+  <link name="upper_arm_link">
+    <visual>
+      <origin xyz="0 0 0.176" rpy="1.5708 0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://ur16e/meshes/visual/upperarm.stl"/>
+      </geometry>
+      <material name="ur_lightgrey"/>
+    </visual>
+  </link>
+
+  <!-- forearm: mesh origin offset by elbow_offset=0.040m along Z,
+       same rotation as upper_arm to align geometry -->
+  <link name="forearm_link">
+    <visual>
+      <origin xyz="0 0 0.040" rpy="1.5708 0 -1.5708"/>
+      <geometry>
+        <mesh filename="package://ur16e/meshes/visual/forearm.stl"/>
+      </geometry>
+      <material name="ur_lightgrey"/>
+    </visual>
+  </link>
+
+  <!-- wrist_1: mesh offset -0.135m along Z (visual_parameters: wrist_1_visual_offset) -->
+  <link name="wrist_1_link">
+    <visual>
+      <origin xyz="0 0 -0.135" rpy="1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://ur16e/meshes/visual/wrist1.stl"/>
+      </geometry>
+      <material name="ur_darkgrey"/>
+    </visual>
+  </link>
+
+  <!-- wrist_2: mesh offset -0.12m along Z (visual_parameters: wrist_2_visual_offset) -->
+  <link name="wrist_2_link">
+    <visual>
+      <origin xyz="0 0 -0.12" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ur16e/meshes/visual/wrist2.stl"/>
+      </geometry>
+      <material name="ur_darkgrey"/>
+    </visual>
+  </link>
+
+  <!-- wrist_3: no Z offset — the mesh origin aligns with the joint frame directly.
+       Using the YAML offset value causes a visible gap between wrist_2 and wrist_3. -->
+  <link name="wrist_3_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <mesh filename="package://ur16e/meshes/visual/wrist3.stl"/>
+      </geometry>
+      <material name="ur_darkgrey"/>
+    </visual>
+  </link>
+
+  <!-- ===== JOINTS ===== -->
+
+  <!-- Fixed joint: base_link → base_link_inertia
+       Introduces a pi rotation around Z so external frames are REP-103 aligned -->
+  <joint name="base_link-base_link_inertia" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_link_inertia"/>
+    <origin xyz="0 0 0" rpy="0 0 3.14159"/>
+  </joint>
+
+  <!-- shoulder_pan_joint: base_link_inertia → shoulder_link
+       Raises 0.1807m along Z (shoulder height d1) -->
+  <joint name="shoulder_pan_joint" type="revolute">
+    <parent link="base_link_inertia"/>
+    <child link="shoulder_link"/>
+    <origin xyz="0 0 0.1807" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="330.0" lower="-6.2832" upper="6.2832" velocity="2.0944"/>
+  </joint>
+
+  <!-- shoulder_lift_joint: shoulder_link → upper_arm_link
+       No translation; 90° roll tilts the rotation axis for the elbow -->
+  <joint name="shoulder_lift_joint" type="revolute">
+    <parent link="shoulder_link"/>
+    <child link="upper_arm_link"/>
+    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="330.0" lower="-6.2832" upper="6.2832" velocity="2.0944"/>
+  </joint>
+
+  <!-- elbow_joint: upper_arm_link → forearm_link
+       -0.4784m along X (upper arm length a2) -->
+  <joint name="elbow_joint" type="revolute">
+    <parent link="upper_arm_link"/>
+    <child link="forearm_link"/>
+    <origin xyz="-0.4784 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="150.0" lower="-3.1416" upper="3.1416" velocity="3.14159"/>
+  </joint>
+
+  <!-- wrist_1_joint: forearm_link → wrist_1_link
+       -0.36m along X (forearm a3) + 0.17415m along Z (d4 offset) -->
+  <joint name="wrist_1_joint" type="revolute">
+    <parent link="forearm_link"/>
+    <child link="wrist_1_link"/>
+    <origin xyz="-0.36 0 0.17415" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="54.0" lower="-6.2832" upper="6.2832" velocity="3.14159"/>
+  </joint>
+
+  <!-- wrist_2_joint: wrist_1_link → wrist_2_link
+       -0.11985m along Y (d5) + 90° roll -->
+  <joint name="wrist_2_joint" type="revolute">
+    <parent link="wrist_1_link"/>
+    <child link="wrist_2_link"/>
+    <origin xyz="0 -0.11985 0" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="54.0" lower="-6.2832" upper="6.2832" velocity="3.14159"/>
+  </joint>
+
+  <!-- wrist_3_joint: wrist_2_link → wrist_3_link
+       +0.11655m along Y (d6) -->
+  <joint name="wrist_3_joint" type="revolute">
+    <parent link="wrist_2_link"/>
+    <child link="wrist_3_link"/>
+    <origin xyz="0 0.11655 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="54.0" lower="-6.2832" upper="6.2832" velocity="3.14159"/>
+  </joint>
+
+</robot>

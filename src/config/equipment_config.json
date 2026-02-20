@@ -32,7 +32,7 @@
         {
           "id": "work_table",
           "name": "Work Table",
-          "shape": "box",
+          "shape": "work_table",
           "defaultDimensions": { "length": 1.2, "width": 0.6, "height": 0.9 },
           "color": "#8b8680"
         },
@@ -46,21 +46,21 @@
         {
           "id": "turntable",
           "name": "Turntable",
-          "shape": "cylinder",
+          "shape": "turntable",
           "defaultDimensions": { "radius": 0.6, "height": 0.12 },
           "color": "#5a7a8c"
         },
         {
           "id": "conveyor",
           "name": "Conveyor",
-          "shape": "box",
+          "shape": "conveyor",
           "defaultDimensions": { "length": 3.0, "width": 0.5, "height": 0.85 },
           "color": "#4a7040"
         },
         {
           "id": "safety_fence",
           "name": "Safety Fence",
-          "shape": "box",
+          "shape": "safety_fence",
           "defaultDimensions": { "length": 2.0, "width": 0.05, "height": 1.4 },
           "color": "#e8a020"
         },
@@ -78,6 +78,41 @@
           "defaultDimensions": { "length": 5.0, "width": 0.2, "height": 3.0 },
           "color": "#c8bfb8",
           "defaultOpacity": 0.85
+        },
+        {
+          "id": "welding_positioner",
+          "name": "Welding Positioner",
+          "shape": "turntable",
+          "defaultDimensions": { "radius": 0.5, "height": 0.9 },
+          "color": "#4a5a6a"
+        },
+        {
+          "id": "fixture_table",
+          "name": "Fixture Table",
+          "shape": "work_table",
+          "defaultDimensions": { "length": 1.5, "width": 1.0, "height": 0.85 },
+          "color": "#5a6a5a"
+        },
+        {
+          "id": "operator_station",
+          "name": "Operator Station",
+          "shape": "operator_station",
+          "defaultDimensions": { "length": 1.2, "width": 0.7, "height": 1.1 },
+          "color": "#5a6a7a"
+        },
+        {
+          "id": "eur_pallet",
+          "name": "EUR Pallet",
+          "shape": "pallet",
+          "defaultDimensions": { "length": 1.2, "width": 0.8, "height": 0.144 },
+          "color": "#c4a55a"
+        },
+        {
+          "id": "guard_rail",
+          "name": "Guard Rail",
+          "shape": "safety_fence",
+          "defaultDimensions": { "length": 3.0, "width": 0.1, "height": 1.0 },
+          "color": "#e0c020"
         }
       ]
     },
@@ -191,6 +226,102 @@
             "wallThick": 0.003
           },
           "color": "#c0c0c0"
+        }
+      ]
+    },
+    "tracks": {
+      "label": "Tracks",
+      "items": [
+        {
+          "id": "abb_irbt2005",
+          "name": "ABB IRBT 2005",
+          "shape": "linear_track",
+          "defaultDimensions": {
+            "length": 5.0,
+            "width": 0.30,
+            "height": 0.15,
+            "carriageLength": 0.50,
+            "carriageWidth": 0.35
+          },
+          "color": "#e58018"
+        },
+        {
+          "id": "abb_irbt4004",
+          "name": "ABB IRBT 4004",
+          "shape": "linear_track",
+          "defaultDimensions": {
+            "length": 6.0,
+            "width": 0.40,
+            "height": 0.20,
+            "carriageLength": 0.70,
+            "carriageWidth": 0.45
+          },
+          "color": "#e58018"
+        },
+        {
+          "id": "fanuc_rtu",
+          "name": "FANUC RTU Gen VI",
+          "shape": "linear_track",
+          "defaultDimensions": {
+            "length": 5.0,
+            "width": 0.35,
+            "height": 0.16,
+            "carriageLength": 0.55,
+            "carriageWidth": 0.40
+          },
+          "color": "#f9a825"
+        },
+        {
+          "id": "fanuc_rtu_hd",
+          "name": "FANUC RTU Gen VI HD",
+          "shape": "linear_track",
+          "defaultDimensions": {
+            "length": 8.0,
+            "width": 0.40,
+            "height": 0.48,
+            "carriageLength": 0.80,
+            "carriageWidth": 0.45
+          },
+          "color": "#f9a825"
+        },
+        {
+          "id": "ur_movotrak",
+          "name": "Thomson Movotrak CTU",
+          "shape": "linear_track",
+          "defaultDimensions": {
+            "length": 4.0,
+            "width": 0.26,
+            "height": 0.12,
+            "carriageLength": 0.40,
+            "carriageWidth": 0.30
+          },
+          "color": "#b0b0b0"
+        },
+        {
+          "id": "ur_cobotracks",
+          "name": "Cobotracks LMK",
+          "shape": "linear_track",
+          "defaultDimensions": {
+            "length": 5.0,
+            "width": 0.28,
+            "height": 0.13,
+            "carriageLength": 0.45,
+            "carriageWidth": 0.32
+          },
+          "color": "#707070"
+        },
+        {
+          "id": "ur_igus_zlw",
+          "name": "igus ZLW-20",
+          "shape": "linear_track",
+          "defaultDimensions": {
+            "length": 3.0,
+            "width": 0.20,
+            "height": 0.10,
+            "carriageLength": 0.30,
+            "carriageWidth": 0.24
+          },
+          "color": "#909090"
         }
       ]
     }

@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "savedAt": "2026-02-20T03:31:20.178Z",
+  "deployedRobots": [
+    {
+      "id": "r-1",
+      "manufacturer": "Universal Robots",
+      "modelId": "ur20",
+      "model": "UR20",
+      "urdf": "universal_robots/ur20.urdf",
+      "packageMap": {
+        "ur20": "universal_robots/ur20"
+      },
+      "position": [
+        -1.6743562333982291,
+        -0.9411065676898096,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "label": "Universal Robots UR20 #1",
+      "approxHeight": 1.9,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-2",
+      "manufacturer": "Universal Robots",
+      "modelId": "ur20",
+      "model": "UR20",
+      "urdf": "universal_robots/ur20.urdf",
+      "packageMap": {
+        "ur20": "universal_robots/ur20"
+      },
+      "position": [
+        1.42,
+        0,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "label": "Universal Robots UR20 #2",
+      "approxHeight": 1.9,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-3",
+      "manufacturer": "ABB",
+      "modelId": "irb4400l",
+      "model": "IRB 4400L",
+      "urdf": "abb/irb4400l.urdf",
+      "packageMap": {
+        "abb_irb4400l": "abb/irb4400l"
+      },
+      "position": [
+        0.09701226642911998,
+        2.112574292745525,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "label": "ABB IRB 4400L #3",
+      "approxHeight": 2.3,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-4",
+      "manufacturer": "ABB",
+      "modelId": "irb4400l",
+      "model": "IRB 4400L",
+      "urdf": "abb/irb4400l.urdf",
+      "packageMap": {
+        "abb_irb4400l": "abb/irb4400l"
+      },
+      "position": [
+        3.3665043161059667,
+        0.7800583496103431,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "label": "ABB IRB 4400L #4",
+      "approxHeight": 2.3,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-5",
+      "manufacturer": "FANUC",
+      "modelId": "m710ic50",
+      "model": "M-710iC/50",
+      "urdf": "fanuc/m710ic50.urdf",
+      "packageMap": {
+        "fanuc_m710ic50": "fanuc/m710ic50"
+      },
+      "position": [
+        -0.65,
+        0,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "label": "FANUC M-710iC/50 #5",
+      "approxHeight": 2.2,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-6",
+      "manufacturer": "FANUC",
+      "modelId": "m710ic50",
+      "model": "M-710iC/50",
+      "urdf": "fanuc/m710ic50.urdf",
+      "packageMap": {
+        "fanuc_m710ic50": "fanuc/m710ic50"
+      },
+      "position": [
+        2.65,
+        0,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1,
+      "label": "FANUC M-710iC/50 #6",
+      "approxHeight": 2.2,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    }
+  ],
+  "sceneObjects": [],
+  "nextRobotId": 7,
+  "nextObjectId": 1,
+  "robotJointAngles": {
+    "r-1": {
+      "shoulder_pan_joint": -0.08726646259971647
+    },
+    "r-3": {
+      "joint_2": 0.9773843811168246,
+      "joint_3": -0.8552113334772214,
+      "joint_4": 0.8377580409572782,
+      "joint_5": 0.3665191429188092,
+      "joint_6": -1.4835298641951802
+    }
+  },
+  "snapToGridEnabled": false,
+  "showLabels": true
+}

@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "savedAt": "2026-02-19T22:54:45.047Z",
+  "deployedRobots": [
+    {
+      "id": "r-1",
+      "manufacturer": "ABB",
+      "modelId": "irb120",
+      "model": "IRB 120",
+      "urdf": "abb/irb120.urdf",
+      "packageMap": {
+        "abb_irb120": "abb"
+      },
+      "position": [
+        -1.01,
+        -1.01,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1.5,
+      "label": "ABB IRB 120 #1",
+      "approxHeight": 0.9,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-2",
+      "manufacturer": "ABB",
+      "modelId": "irb120",
+      "model": "IRB 120",
+      "urdf": "abb/irb120.urdf",
+      "packageMap": {
+        "abb_irb120": "abb"
+      },
+      "position": [
+        1.01,
+        -1.01,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1.5,
+      "label": "ABB IRB 120 #2",
+      "approxHeight": 0.9,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-3",
+      "manufacturer": "ABB",
+      "modelId": "irb120",
+      "model": "IRB 120",
+      "urdf": "abb/irb120.urdf",
+      "packageMap": {
+        "abb_irb120": "abb"
+      },
+      "position": [
+        -1.01,
+        1.01,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1.5,
+      "label": "ABB IRB 120 #3",
+      "approxHeight": 0.9,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    },
+    {
+      "id": "r-4",
+      "manufacturer": "ABB",
+      "modelId": "irb120",
+      "model": "IRB 120",
+      "urdf": "abb/irb120.urdf",
+      "packageMap": {
+        "abb_irb120": "abb"
+      },
+      "position": [
+        1.01,
+        1.01,
+        0
+      ],
+      "rotation": 0,
+      "scale": 1.5,
+      "label": "ABB IRB 120 #4",
+      "approxHeight": 0.9,
+      "mountType": "floor",
+      "colorOverride": null,
+      "opacity": 1
+    }
+  ],
+  "sceneObjects": [],
+  "nextRobotId": 5,
+  "nextObjectId": 1,
+  "robotJointAngles": {},
+  "snapToGridEnabled": false,
+  "showLabels": true
+}
